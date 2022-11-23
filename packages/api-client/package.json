@@ -1,0 +1,77 @@
+{
+  "name": "@bloomreach/discovery-api-client",
+  "version": "2.0.0",
+  "license": "ISC",
+  "author": "Bloomreach",
+  "sideEffects": false,
+  "yarn": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/index.es.js",
+      "require": "./lib/index.js"
+    }
+  },
+  "main": "lib/index.js",
+  "module": "lib/index.es.js",
+  "umd:main": "lib/index.umd.js",
+  "scripts": {
+    "build": "rimraf lib && rollup -c && yarn ts-coverage",
+    "clean:lib": "rimraf lib",
+    "dev": "nodemon src/server.ts",
+    "format": "prettier --write ",
+    "lint": "eslint  --ext ts",
+    "serve:lib": "serve dist",
+    "test": "jest --experimental-vm-modules node_modules/jest/bin/jest.js --verbose src",
+    "test:watch": "jest --watchAll src",
+    "ts-coverage": "typescript-coverage-report"
+  },
+  "devDependencies": {
+    "lint-staged": "^10.5.4",
+    "semver": "^7.3.5",
+    "serve": "^12.0.0",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.7.2"
+  },
+  "engines": {
+    "node": ">=16.x"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --cache",
+      "jest --findRelatedTests"
+    ]
+  },
+  "typeCoverage": {
+    "atLeast": 87.27,
+    "is": 99,
+    "cache": true,
+    "debug": false,
+    "detail": true,
+    "ignoreCatch": true,
+    "ignoreFiles": [
+      "__tests__/**",
+      "node_modules/**",
+      "lib/**",
+      "dist/**",
+      "**/*.json"
+    ],
+    "strict": true,
+    "suppressError": false,
+    "update": true,
+    "historyFile": "typescript-coverage.json",
+    "noDetailWhenFailed": true,
+    "ignoreUnread": true,
+    "ignoreNested": true,
+    "ignoreAsAssertion": true,
+    "ignoreTypeAssertion": true,
+    "ignoreNonNullAssertion": true,
+    "project": "tsconfig.json",
+    "showRelativePath": true
+  }
+}

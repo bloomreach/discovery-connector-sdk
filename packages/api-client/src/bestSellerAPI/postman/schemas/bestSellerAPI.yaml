@@ -1,0 +1,228 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Search API
+  description: Bloomreach Discovery
+  license: {
+    name: "Apache 2.0",
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+  }
+paths:
+  /:
+    get:
+      description: The Bestseller API returns the products that are likely to generate the most revenue.
+      tags: [productSearch]
+      operationId: getProductSearchResults
+
+      # query - Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id.
+      # https://swagger.io/specification/#parameter-object
+      parameters:
+        - name: account_id
+          in: query
+          description: Your site's numerical Bloomreach account ID. Your Bloomreach representative gives your site's account ID to you before or during your integration kickoff meeting.
+          example: 6702
+          required: true
+          allowEmptyValue: false
+          schema: {
+            type: integer,
+            format: int32
+          }
+
+
+        - name: auth_key
+          in: query
+          description: The Bloomreach-provided authentication key for the Bloomreach account that's sending the request.
+          required: false
+          allowEmptyValue: true
+          schema: {type: string}
+
+
+        - name: _br_uid_2
+          in: query
+          description: A first-party cookie created by the Bloomreach tracking pixel library (BrTrk). This cookie creates a unique, anonymous identifier for every browser or device.
+          example: uid%3D7797686432023%3Av%3D11.5%3Ats%3D1428617911187%3Ahc%3D55
+          required: false
+          allowEmptyValue: false
+          schema: {type: string}
+
+        - name: domain_key
+          in: query
+          description: Site domain ID which is provided by Bloomreach
+          example: documentation_site
+          required: true
+          allowEmptyValue: false
+          schema: {type: string}
+
+        - name: fl
+          in: query
+          description: Filtered list of attributes you want returned in your API response (i.e. productID, price). Multiplevalues should be comma separated. "pid" Must be sent for product or category searches, "item_id" must be sent for content searches,
+          example: pid
+          required: false
+          allowEmptyValue: true
+          schema: {type: string}
+
+        - name: ref_url
+          in: query
+          description: The URL of the page or HTTP referrer where the request is started.
+          example: https://localhost
+          required: false
+          allowEmptyValue: true
+          schema: { type: string }
+
+        - name: request_id
+          in: query
+          description: An ID to track site visitor clicks. We recommend that you generate unique, random values of 13 digits to enable click-tracking.
+          required: false
+          allowEmptyValue: false
+          schema: { type: string }
+
+        - name: request_type
+          in: query
+          description: The type of API request. Value should be search for ALL Search requests.
+          required: true
+          example: search
+          allowEmptyValue: false
+          schema: { type: string }
+
+
+        - name: rows
+          in: query
+          description: The number of matching items to return per results page in the API response. The maximum value is 200.
+          required: false
+          example: 20
+          allowEmptyValue: true
+          schema: { type: integer }
+
+        - name: search_type
+          in: query
+          description: The type of search. Value should be "keyword" for Product or Content Search requests, "category" for Category requests.
+          required: true
+          example: bestseller
+          allowEmptyValue: false
+          schema: { type: string }
+
+        - name: start
+          in: query
+          description: The number of the first item on a page of results. For example, the first item on the first page is 0, making the start value also 0. The maximum value is 10000.
+          required: true
+          example: 0
+          allowEmptyValue: false
+          schema: { type: integer }
+
+        - name: url
+          in: query
+          description: The URL of the page or HTTP referrer where the request is started.
+          example: https://www.documentation-site.com
+          required: true
+          allowEmptyValue: false
+          schema: { type: string }
+
+        - name: callback
+          in: query
+          description: Indicates whether to return data wrapped in the function for cross-origin requests.
+          example:
+          required: false
+          allowEmptyValue: true
+          schema: { type: string }
+
+        - name: fq
+          in: query
+          description: The fq parameter applies a faceted filter to the returned products, searching for products that fit your parameter values. Use fq=store_lat_lon to enable filtering by distance for BOPIS.
+          example:
+          required: false
+          allowEmptyValue: true
+          schema: { type: string }
+
+        - name: title
+          in: query
+          description: The title or name of the product.
+          example:
+          required: false
+          allowEmptyValue: true
+          schema: { type: string }
+
+        - name: user_id
+          in: query
+          description: The universal customer ID of the user. You only need to pass this field if your particular integration tracks customers this way. The parameter captures user IDs from the customer side, and reuses the information when powering apps or enhancing cross-device linking. In this way, Bloomreach recognizes users in a way that's aligned with your system. Use an anonymous string. Don't use email or other personally identifiable information. If you do not track users this way, then omit this field.
+          example:
+          required: false
+          allowEmptyValue: true
+          schema: { type: string }
+
+        - name: view_id
+          in: query
+          description: A unique identifier for a specific view of your product catalog. If you have multiple versions of your site, each with their own product catalog characteristics like product titles and prices, then add view_id to your call. Bloomreach uses your view_id parameter value to display the right product information for your customers based on their individual site views. You can enter any string value to identify the specific site catalog view. This string must be consistent in your pixel, API, and product catalog.
+          example:
+          required: false
+          allowEmptyValue: true
+          schema: { type: string }
+
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                items:
+                  $ref: "#/components/schemas/BestSellerResponse"
+
+servers:
+  - url: "https://core.dxpapi.com/api/v1/core/?"
+
+components:
+  schemas:
+    SearchBestSeller:
+      type: object
+      properties:
+        #response
+        response:
+          type: object
+          properties:
+            numFound:
+              type: integer
+            start:
+              type: integer
+            docs:
+              type: array
+              items:
+                type: object
+        # facet_counts
+        facet_counts:
+          type: object
+          properties:
+            facet_ranges:
+              type: object
+            facet_fields:
+              type: object
+              properties:
+                category:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                      crumb:
+                        type: string
+                      parent:
+                        type: string
+                      cat_id:
+                        type: string
+                      tree_path:
+                        type: string
+            # facet_queries
+            facet_queries:
+              type: object
+        # facet_counts
+        category_map:
+          type: object
+        # did_you_mean
+        did_you_mean:
+          type: array
+          items:
+            type: object
+
+
+
+
+

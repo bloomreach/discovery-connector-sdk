@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autosuggest document</title>
+
+  <style>
+    body {
+      background-color: bisque;
+      font-size: large;
+      }
+    body h1 {
+      color: brown;
+      }
+    body .search {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 10px;
+      }
+    body .search__input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.5rem;
+      border: 1px solid;
+      border-radius: 5px;
+      margin: 0 auto;
+      }
+    @media (min-width: 680px) {
+      body .search__input {
+        width: 300px;
+        }
+      }
+    body .search__results {
+      width: 100%;
+      }
+  </style>
+
+  <script id="connector-example">
+    window.bloomreachConnector = {}
+    bloomreachConnector.config = {
+
+      /* 👇 v2 autosuggest response example, for "lawn" */
+      account_id: '6437',
+      domain_key: '?',
+      /* 👇 v1, "ski" */
+      /* account_id: '6525',
+       domain_key: 'levelninesports', */
+      default_search_parameter: 'q',
+      search_page_url: 'http://localhost:3000/documents/product-search',
+      // This is an example to a money formatting function that's applied to the displayed prices
+      /* format_money: (priceInCents) => {
+       return `£${(priceInCents / 100.0).toLocaleString(undefined, {
+       minimumFractionDigits: 2,
+       maximumFractionDigits: 2
+       })}`
+       }, */
+      search: {
+        enabled: true,
+        items_per_page: 16,
+        facets_included: true,
+        initial_number_of_facets: 5,
+        initial_number_of_facet_values: 6,
+        infinite_scroll: false,
+        selector: '.main-content',
+        sorting_options: [
+          {label: 'Relevance', value: ''},
+          {label: 'Price (low - high)', value: 'price+asc'},
+          {label: 'Name (A - Z)', value: 'title+asc'},
+          {label: 'Price (high - low)', value: 'price+desc'},
+          {label: 'Name (Z - A)', value: 'title+desc'}
+        ],
+        is_search_page: false,
+        display_variants: false
+      },
+      autosuggest: {
+        enabled: true,
+        number_of_terms: 13,
+        number_of_products: 14,
+        number_of_collections: 12,
+        selector: '.search__input',
+        catalog_views: 'tractorsupply',
+        endpoint: 'https://suggest.dxpapi.com/api/v1/suggest/',
+      },
+      category: {
+        enabled: true,
+        sorting_options: [
+          {label: 'Relevance', value: ''},
+          {label: 'Price (low - high)', value: 'price+asc'},
+          {label: 'Name (A - Z)', value: 'title+asc'},
+          {label: 'Price (high - low)', value: 'price+desc'},
+          {label: 'Name (Z - A)', value: 'title+desc'}
+        ],
+        items_per_page: 16,
+        facets_included: true,
+        initial_number_of_facets: 5,
+        initial_number_of_facet_values: 6,
+        infinite_scroll: false,
+        selector: '.main-content',
+        is_category_page: true,
+        display_variants: false
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    const br_data = window.br_data || {}
+    br_data.acct_id = '6511'
+    br_data.ptype = 'homepage'
+    br_data.title = 'Bloomreach Connector Development'
+    br_data.domain_key = 'sandbox_bornconnector'
+    br_data.catalogs = ['NEED_MORE_INFO']
+    br_data.view_id = 'NEED_MORE_INFO'
+    br_data.user_id = ''
+    br_data.tms = 'NEED_MORE_INFO'
+    ;(function () {
+      const brtrk = document.createElement('script')
+      brtrk.type = 'text/javascript'
+      brtrk.async = true
+      brtrk.src = '//cdn.brcdn.com/v1/br-trk-6511.js'
+      const s = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore(brtrk, s)
+    })()
+  </script>
+
+  <link rel="stylesheet" href="/dist/autosuggest.css" />
+  <script type="application/javascript" src="/dist/autosuggest.js" async></script>
+</head>
+<body>
+<h1>Autosuggest demo</h1>
+
+<form class="search" action="http://localhost:3000/documents/product-search">
+  <input type="text" placeholder="Search" class="search__input" name="q" />
+</form>
+<main class="main-content">
+  <h2>What is Lorem Ipsum?</h2>
+  <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting
+    industry. Lorem Ipsum has been the industry's standard dummy text ever
+    since the 1500s, when an unknown printer took a galley of type and
+    scrambled it to make a type specimen book. It has survived not only five
+    centuries, but also the leap into electronic typesetting, remaining
+    essentially unchanged. It was popularised in the 1960s with the release
+    of Letraset sheets containing Lorem Ipsum passages, and more recently
+    with desktop publishing software like Aldus PageMaker including versions
+    of Lorem Ipsum.
+  </p>
+  <button
+    id="AddToCart-product-template"
+    type="submit"
+    name="add"
+    class="btn btn--add-to-cart btn--secondary-accent"
+    data-blm-add-to-cart
+    data-blm-add-to-cart-sku="Chair456"
+    data-blm-add-to-cart-prod-id="85471"
+    data-blm-add-to-cart-prod-name="Graywashed Wood And Wicker Claire Outdoor Rocking Chair"
+  >
+        <span class="btn__text"
+        >Add to cart triggering example for SKU: Chair456, ID: 85471</span
+        >
+  </button>
+
+  <h2>Why do we use it?</h2>
+  <p>
+    It is a long established fact that a reader will be distracted by the
+    readable content of a page when looking at its layout. The point of
+    using Lorem Ipsum is that it has a more-or-less normal distribution of
+    letters, as opposed to using 'Content here, content here', making it
+    look like readable English. Many desktop publishing packages and web
+    page editors now use Lorem Ipsum as their default model text, and a
+    search for 'lorem ipsum' will uncover many web sites still in their
+    infancy. Various versions have evolved over the years, sometimes by
+    accident, sometimes on purpose (injected humour and the like).
+  </p>
+
+  <h2>Where does it come from?</h2>
+  <p>
+    Contrary to popular belief, Lorem Ipsum is not simply random text. It
+    has roots in a piece of classical Latin literature from 45 BC, making it
+    over 2000 years old. Richard McClintock, a Latin professor at
+    Hampden-Sydney College in Virginia, looked up one of the more obscure
+    Latin words, consectetur, from a Lorem Ipsum passage, and going through
+    the cites of the word in classical literature, discovered the
+    undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33
+    of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by
+    Cicero, written in 45 BC. This book is a treatise on the theory of
+    ethics, very popular during the Renaissance. The first line of Lorem
+    Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section
+    1.10.32.
+  </p>
+
+  <p>
+    The standard chunk of Lorem Ipsum used since the 1500s is reproduced
+    below for those interested. Sections 1.10.32 and 1.10.33 from "de
+    Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact
+    original form, accompanied by English versions from the 1914 translation
+    by H. Rackham.
+  </p>
+
+  <h2>Where can I get some?</h2>
+  <p>
+    There are many variations of passages of Lorem Ipsum available, but the
+    majority have suffered alteration in some form, by injected humour, or
+    randomised words which don't look even slightly believable. If you are
+    going to use a passage of Lorem Ipsum, you need to be sure there isn't
+    anything embarrassing hidden in the middle of text. All the Lorem Ipsum
+    generators on the Internet tend to repeat predefined chunks as
+    necessary, making this the first true generator on the Internet. It uses
+    a dictionary of over 200 Latin words, combined with a handful of model
+    sentence structures, to generate Lorem Ipsum which looks reasonable. The
+    generated Lorem Ipsum is therefore always free from repetition, injected
+    humour, or non-characteristic words etc.
+  </p>
+</main>
+</body>
+</html>

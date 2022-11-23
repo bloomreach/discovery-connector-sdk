@@ -1,0 +1,41 @@
+{
+  "name": "@bloomreach/discovery-sdk-react-frontend",
+  "description": "React / Preact based Front end components and widget examples & demos for Bloomreach Discovery Search SDK",
+  "repository": "",
+  "bugs": " ",
+  "contributors": [
+    "jason.wolf@borngroup.com"
+  ],
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "./node_modules/.bin/preact build",
+    "serve": "./node_modules/.bin/sirv build --port 8080 --cors --single",
+    "dev": "./node_modules/.bin/preact watch",
+    "lint": "./node_modules/.bin/eslint 'packages/frontend-ui/src/**/*.{js,jsx,ts,tsx}'",
+    "test": "./node_modules/.bin/jest ./tests"
+  },
+  "dependencies": {
+    "@bloomreach/discovery-api-client": "file:./../../api-client",
+    "preact": "^10.11.2",
+    "preact-render-to-string": "^5.2.6",
+    "preact-router": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.23",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-preact-pure": "^4.0.1",
+    "preact-cli": "^3.4.1",
+    "sirv-cli": "^2.0.2",
+    "typescript-plugin-css-modules": "^3.4.0",
+    "typings-for-css-modules-loader": "^1.7.0"
+  },
+  "jest": {
+    "preset": "jest-preset-preact",
+    "setupFiles": [
+      "<rootDir>/tests/__mocks__/browserMocks.ts",
+      "<rootDir>/tests/__mocks__/setupTests.ts"
+    ]
+  }
+}

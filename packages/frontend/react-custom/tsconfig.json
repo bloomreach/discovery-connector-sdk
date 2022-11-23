@@ -1,0 +1,59 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "plugins": [
+            { "name": "typescript-plugin-css-modules" },
+            {"name": "typescript-eslint-language-service"}
+        ],
+
+        /* Basic Options */
+        "allowJs": true,                          /* Allow javascript files to be compiled. */
+        "checkJs": false,
+        "declaration": true                       /* Generates corresponding '.d.ts' file. */,
+        "sourceMap": true                         /* Generates corresponding '.map' file. */,
+        "importHelpers": true                     /* Import emit helpers from 'tslib'. */,
+        "noEmit": true,                             /* Do not emit compiler output files like JavaScript source code, source-maps or declarations. */
+        "noEmitHelpers": true,
+        "forceConsistentCasingInFileNames": true,
+        "preserveSymlinks": true,                 /* Allows symlink resolution to real path */
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "react",                           /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+        "jsxFactory": "h",                        /* Specify the JSX factory function to use when targeting react JSX emit, e.g. React.createElement or h. */
+        "jsxFragmentFactory": "Fragment",         /* Specify the JSX fragment factory function to use when targeting react JSX emit with jsxFactory compiler option is specified, e.g. Fragment. */
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "noImplicitReturns": true,                /* Report error when not all code paths in function return a value. */
+        "noImplicitAny": false,                   /* Raise error on expressions and declarations with an implied 'any' type. */
+        "noImplicitThis": false,                  /* Raise error on 'this' expressions with an implied 'any' type. */
+        "noUncheckedIndexedAccess": true,         /* Describe objects with unknown keys but known values  from index signatures */
+        "noUnusedLocals": true,                   /* Report errors on unused locals. */
+        "noUnusedParameters": false,              /* Report errors on unused parameters. */
+        "strictNullChecks": false,                /* Enable strict null checks. */
+        "strictFunctionTypes": false,             /* Enable strict checking of function types. */
+        "strictBindCallApply": false,             /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+        "strictPropertyInitialization": false,    /* Enable strict checking of property initialization in classes. */
+        "alwaysStrict": false,                    /* Parse in strict mode and emit "use strict" for each source file. */
+        "incremental": true,
+
+
+        /* Strict Type-Checking Options */
+        "strict": false,                          /* Enable all strict type-checking options. */
+
+        /* Module Resolution Options */
+        "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+        "esModuleInterop": true,                  /* */
+
+
+        /* Experimental Options */
+        "experimentalDecorators": true,          /* Enables experimental support for ES7 decorators. */
+        "emitDecoratorMetadata": true,           /* Enables experimental support for emitting type metadata for decorators. */
+
+        /* Advanced Options */
+        "skipLibCheck": true                     /* Skip type checking of declaration files. */
+    },
+    "include": ["**/*",
+      "packages/frontend-ui/tests/**/*"
+    ]
+}

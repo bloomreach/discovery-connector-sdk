@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": ["**/*"],
+  "exclude": ["node_modules", "lib", "dist"],
+  "compilerOptions": {
+    /* Plugins */
+    "plugins": [
+      { "name": "typescript-plugin-css-modules" },
+      {"name": "typescript-eslint-language-service"}
+    ],
+
+    /* Basic Options */
+    "target": "ES2017",
+    "module": "esnext" ,
+    "moduleResolution": "node",
+    "allowJs": false,
+    "declaration": true                         /* Generates corresponding '.d.ts' file. */,
+    "sourceMap": true                           /* Generates corresponding '.map' file. */,
+    "importHelpers": true                       /* Import emit helpers from 'tslib'. */,
+    "noEmit": true,                             /* Do not emit compiler output files like JavaScript source code, source-maps or declarations. */
+    "noEmitHelpers": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./lib",
+    "esModuleInterop": true,
+    "preserveSymlinks": true,                   /* Allows symlink resolution to real path */
+
+    /* Diagnostics */
+    "diagnostics": false,                        /* output compiler diagnostics */
+
+    /* Strict Type-Checking Options */
+    "strict": true                              /* Enable all strict type-checking options. */,
+
+    /* Type Checking */
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitReturns": true,                  /* Report error when not all code paths in function return a value. */
+    "noImplicitAny": false,                     /* Raise error on expressions and declarations with an implied 'any' type. */
+    "noImplicitThis": true,                     /* Raise error on 'this' expressions with an implied 'any' type. */
+    "noUncheckedIndexedAccess": true,           /* Describe objects with unknown keys but known values  from index signatures */
+    "noUnusedLocals": true,                     /* Report errors on unused locals. */
+    "noUnusedParameters": false,                /* Report errors on unused parameters. */
+    "strictNullChecks": true,                   /* Enable strict null checks. */
+    "strictFunctionTypes": false,               /* Enable strict checking of function types. */
+    "strictBindCallApply": true,                /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+    "strictPropertyInitialization": false,      /* Enable strict checking of property initialization in classes. */
+    "alwaysStrict": false,                      /* Parse in strict mode and emit "use strict" for each source file. */
+    "downlevelIteration": true,
+
+    /* Advanced Options */
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
+
+    /* json imports */
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+
+  "typeAcquisition": {
+    "include": ["jest"]
+  }
+}

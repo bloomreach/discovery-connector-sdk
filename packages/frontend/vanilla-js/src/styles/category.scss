@@ -1,0 +1,17 @@
+// Category component - Displays category data returned from the category API
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.blm-category {
+  max-width: 1140px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+
+  @import 'search-and-category';
+}
+
+@import 'general-elements';

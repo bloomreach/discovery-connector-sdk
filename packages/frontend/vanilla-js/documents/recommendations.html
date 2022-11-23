@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pathways and Recommendations document</title>
+
+  <script id="connector-example">
+    window.bloomreachConnector = {}
+    bloomreachConnector.config = {
+      account_id: '6511',
+      domain_key: 'sandbox_bornconnector',
+      auth_key: '3ggj32eqbeqaahsa',
+      tracking_cookie:
+        'uid%3D5015349870045%3Av%3D11.8%3Ats%3D1613763063884%3Ahc%3D114',
+      default_search_parameter: 'q',
+      // This is an example to a money formatting function that's applied to the displayed prices
+      /* format_money: (priceInCents) => {
+       return `£${(priceInCents / 100.0).toLocaleString(undefined, {
+       minimumFractionDigits: 2,
+       maximumFractionDigits: 2
+       })}`
+       }, */
+      search: {
+        enabled: true,
+        items_per_page: 16,
+        facets_included: true,
+        initial_number_of_facets: 5,
+        initial_number_of_facet_values: 6,
+        infinite_scroll: false,
+        selector: '.main-content',
+        sorting_options: [
+          {label: 'Relevance', value: ''},
+          {label: 'Price (low - high)', value: 'price+asc'},
+          {label: 'Name (A - Z)', value: 'title+asc'},
+          {label: 'Price (high - low)', value: 'price+desc'},
+          {label: 'Name (Z - A)', value: 'title+desc'}
+        ],
+        is_search_page: false,
+        display_variants: false
+      },
+      autosuggest: {
+        enabled: true,
+        number_of_terms: 13,
+        number_of_products: 14,
+        number_of_collections: 12,
+        selector: '.search__input'
+      },
+      category: {
+        enabled: true,
+        sorting_options: [
+          {label: 'Relevance', value: ''},
+          {label: 'Price (low - high)', value: 'price+asc'},
+          {label: 'Name (A - Z)', value: 'title+asc'},
+          {label: 'Price (high - low)', value: 'price+desc'},
+          {label: 'Name (Z - A)', value: 'title+desc'}
+        ],
+        items_per_page: 12,
+        facets_included: true,
+        initial_number_of_facets: 5,
+        initial_number_of_facet_values: 6,
+        infinite_scroll: false,
+        selector: '.main-content',
+        is_category_page: true,
+        display_variants: false,
+        category_id: '116715'
+      },
+      widget: {
+        // endpoint: 'https://pathways-staging.dxpapi.com/api/v2/widgets/',
+        // fields: 'waaaat,pid,price,sale_price,title,thumb_image,url'
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    const br_data = window.br_data || {}
+    br_data.acct_id = '6511'
+    br_data.ptype = 'homepage'
+    br_data.title = 'Bloomreach Connector Development'
+    br_data.domain_key = 'sandbox_bornconnector'
+    br_data.catalogs = ['NEED_MORE_INFO']
+    br_data.view_id = 'NEED_MORE_INFO'
+    br_data.user_id = ''
+    br_data.tms = 'NEED_MORE_INFO'
+    ;(function () {
+      const brtrk = document.createElement('script')
+      brtrk.type = 'text/javascript'
+      brtrk.async = true
+      brtrk.src = '//cdn.brcdn.com/v1/br-trk-6511.js'
+      const s = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore(brtrk, s)
+    })()
+  </script>
+
+  <style>
+    .blm-recommendations-widget {
+      display: none;
+      }
+    .blm-recommendations-widget.blm-widget-loaded {
+      display: block;
+      }
+  </style>
+
+  <link rel="stylesheet" href="/dist/recommendations.css" />
+  <script type="application/javascript" src="/dist/recommendations.js" defer></script>
+</head>
+<body>
+<h1>Pathways and Recommendations module</h1>
+
+<div class="blm-recommendations-widget-container">
+  <hr />
+
+  <h2>Category widget / 116940</h2>
+  <div
+    class="blm-recommendations-widget"
+    data-id="RD2X9d"
+    data-type="category"
+    data-number-of-items-to-fetch="16"
+    data-number-of-items-to-show="4"
+    data-category-id="116940"
+  ></div>
+  <div>
+    <h3>Example API call:</h3>
+    <pre>
+      https://pathways.dxpapi.com/api/v2/widgets/category/RD2X9d
+        ?account_id=6511
+        &_br_uid_2=uid%253A1031056211%253Av%253D01.5%253Ats%253D1301650080%253Ahc%253D409
+        &url=sandbox-bornconnector.bloomreach.com
+        &fields=pid,price,sale_price,title,thumb_image,url
+        &request_id=1331600000
+        &domain_key=sandbox_bornconnector
+        &ref_url=sandbox-bornconnector.bloomreach.com
+        &rows=16
+        &cat_id=116940</pre
+    >
+  </div>
+</div>
+
+<div class="blm-recommendations-widget-container">
+  <hr />
+
+  <h2>Keyword widget / "bed and bath"</h2>
+  <div
+    class="blm-recommendations-widget"
+    data-id="kgrb9g"
+    data-type="keyword"
+    data-query="bed and bath"
+    data-number-of-items-to-fetch="16"
+    data-number-of-items-to-show="4"
+  ></div>
+  <div>
+    <h3>Example API call:</h3>
+    <pre>
+      https://pathways.dxpapi.com/api/v2/widgets/keyword/kgrb9g
+        ?account_id=6511
+        &_br_uid_2=uid%253A1031056211%253Av%253D01.5%253Ats%253D1301650080%253Ahc%253D409
+        &url=sandbox-bornconnector.bloomreach.com
+        &fields=pid,price,sale_price,title,thumb_image,url
+        &request_id=1331600000
+        &domain_key=sandbox_bornconnector
+        &query=bed%20and%20bath
+        &ref_url=sandbox-bornconnector.bloomreach.com
+        &rows=16</pre
+    >
+  </div>
+</div>
+
+<div class="blm-recommendations-widget-container">
+  <hr />
+
+  <h2>Global widget / Global Trending</h2>
+  <div
+    class="blm-recommendations-widget"
+    data-id="MDxLyD"
+    data-type="global"
+    data-number-of-items-to-fetch="16"
+    data-number-of-items-to-show="4"
+  ></div>
+  <div>
+    <h3>Example API call:</h3>
+    <pre>
+      https://pathways.dxpapi.com/api/v2/widgets/global/MDxLyD
+        ?account_id=6511
+        &_br_uid_2=uid%253A1031056211%253Av%253D01.5%253Ats%253D1301650080%253Ahc%253D409
+        &url=sandbox-bornconnector.bloomreach.com
+        &fields=pid,price,sale_price,title,thumb_image,url
+        &request_id=1331600000
+        &domain_key=sandbox_bornconnector
+        &ref_url=sandbox-bornconnector.bloomreach.com
+        &rows=16</pre
+    >
+  </div>
+</div>
+
+<div class="blm-recommendations-widget-container">
+  <hr />
+
+  <h2>Personalized widget / Past Purchases for user ID: 123</h2>
+  <div
+    class="blm-recommendations-widget"
+    data-id="pWbBzW"
+    data-type="personalized"
+    data-user-id="123"
+    data-number-of-items-to-fetch="16"
+    data-number-of-items-to-show="4"
+  ></div>
+  <div>
+    <h3>Example API call:</h3>
+    <pre>
+      https://pathways.dxpapi.com/api/v2/widgets/personalized/pWbBzW
+        ?account_id=6511
+        &_br_uid_2=uid%253A1031056211%253Av%253D01.5%253Ats%253D1301650080%253Ahc%253D409
+        &url=sandbox-bornconnector.bloomreach.com
+        &fields=pid,price,sale_price,title,thumb_image,url
+        &request_id=1331600000
+        &domain_key=sandbox_bornconnector
+        &ref_url=sandbox-bornconnector.bloomreach.com
+        &rows=16
+        &user_id=123</pre
+    >
+  </div>
+</div>
+
+<div class="blm-recommendations-widget-container">
+  <hr />
+
+  <h2>Item widget / Frequently Bought Together #1 for item ID: 55837</h2>
+  <div
+    class="blm-recommendations-widget"
+    data-id="pWb1zD"
+    data-type="item"
+    data-item-ids="55837"
+    data-number-of-items-to-fetch="16"
+    data-number-of-items-to-show="4"
+  ></div>
+  <div>
+    <h3>Example API call:</h3>
+    <pre>
+      https://pathways.dxpapi.com/api/v2/widgets/item/pWb1zD
+        ?account_id=6511
+        &_br_uid_2=uid%253A1031056211%253Av%253D01.5%253Ats%253D1301650080%253Ahc%253D409
+        &url=sandbox-bornconnector.bloomreach.com
+        &fields=pid,price,sale_price,title,thumb_image,url
+        &request_id=1331600000
+        &domain_key=sandbox_bornconnector
+        &ref_url=sandbox-bornconnector.bloomreach.com
+        &rows=16
+        &item_ids=55837</pre
+    >
+  </div>
+</div>
+
+<div class="blm-recommendations-widget-container">
+  <hr />
+
+  <h2>Item widget / Frequently Bought Together #2 for item ID: 79481</h2>
+  <div
+    class="blm-recommendations-widget"
+    data-id="pWb1zD"
+    data-type="item"
+    data-item-ids="79481"
+    data-number-of-items-to-fetch="16"
+    data-number-of-items-to-show="4"
+  ></div>
+  <div>
+    <h3>Example API call:</h3>
+    <pre>
+      https://pathways.dxpapi.com/api/v2/widgets/item/pWb1zD
+        ?account_id=6511
+        &_br_uid_2=uid%253A1031056211%253Av%253D01.5%253Ats%253D1301650080%253Ahc%253D409
+        &url=sandbox-bornconnector.bloomreach.com
+        &fields=pid,price,sale_price,title,thumb_image,url
+        &request_id=1331600000
+        &domain_key=sandbox_bornconnector
+        &ref_url=sandbox-bornconnector.bloomreach.com
+        &rows=16
+        &item_ids=79481</pre
+    >
+  </div>
+</div>
+</body>
+</html>

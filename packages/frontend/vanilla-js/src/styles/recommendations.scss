@@ -1,0 +1,120 @@
+@import 'imports';
+
+// Recommendations component - Displays product data returned from the pathway and recommendations API
+.blm-recommendation-widget-content {
+  max-width: 1140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+// Carousel component - Styling for bespoke carousel widget
+.blm-carousel {
+  &__item {
+    cursor: pointer;
+  }
+}
+
+.blm-recommendation {
+  &__products {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: normal;
+    overflow: auto;
+    padding-bottom: 20px;
+    justify-content: flex-start;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__product {
+    min-width: 100%;
+    position: relative;
+    left: 0;
+    transition: 0.5s;
+
+    @include breakpoint(mediumandup) {
+      min-width: 50%;
+    }
+
+    @include breakpoint(xlargeandup) {
+      min-width: calc((100% / var(--number-of-items-to-show)));
+    }
+
+    &-inner {
+      margin: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 5px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+.blm-product-image-container {
+  width: 80%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  margin: 10px auto 20px;
+
+  &__image {
+    width: auto;
+    max-height: 315px;
+  }
+}
+
+.blm-product-details-container {
+  width: 100%;
+  margin: auto;
+  padding: 10px 5px;
+  font-size: 16px;
+  text-align: center;
+  color: $blm-color-text-body;
+  line-height: 1.6;
+  overflow: hidden;
+  box-sizing: content-box;
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 0;
+    display: block;
+    padding: 0 20px;
+    color: $blm-color-brand-secondary;
+    text-decoration: none;
+
+    &:hover {
+      color: $blm-color-brand-secondary-hover;
+    }
+  }
+
+  &__price {
+    font-weight: bold;
+  }
+
+  &__original-price {
+    font-weight: normal;
+    text-decoration: line-through;
+  }
+}
+
+.blm-product-details-title-container {
+  width: 100%;
+  height: 48px;
+  overflow-y: scroll;
+  padding: 0 10px;
+  box-sizing: content-box;
+
+  @include breakpoint(largeandup) {
+    height: 72px;
+  }
+}
+
+.blm-invisible {
+  visibility: hidden;
+}

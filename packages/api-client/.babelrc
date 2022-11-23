@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [ "@babel/preset-typescript",
+      {
+        "useBuiltIns": "usage",
+        "corejs": 3,
+        "modules": "auto",
+        "loose": true,
+        "bugfixes": false,
+        "debug": true
+      }
+    ]
+  ],
+  "plugins": ["@babel/plugin-proposal-class-properties"]
+}

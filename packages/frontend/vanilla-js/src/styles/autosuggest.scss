@@ -1,0 +1,157 @@
+@import 'imports';
+
+$line-height: 1.1;
+$terms-row-gap: 3px;
+$text-color: $blm-color-brand-black;
+
+/* Autosuggest container - Displays the data that comes back from the Autosuggest API */
+.blm-autosuggest {
+  width: 100%;
+  max-height: 450px;
+  background-color: $blm-color-brand-white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  font-size: 18px;
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 25%);
+
+  @include breakpoint(mediumandup) {
+    width: 680px;
+    flex-direction: row;
+  }
+
+  @include breakpoint(xlargeandup) {
+    width: 785px;
+  }
+}
+
+/* Suggestion terms container - Styling the box that holds the search term suggestions and hides scrollbar of the list */
+.blm-autosuggest__suggestion-terms-container {
+  overflow: hidden;
+  padding-bottom: 15px;
+  border-bottom: 1px solid $blm-color-brand-cream;
+  max-height: 50%;
+
+  @include breakpoint(mediumandup) {
+    width: 40%;
+    height: auto;
+    border-right: 1px solid $blm-color-brand-cream;
+    border-bottom: 0;
+    max-height: 100%;
+  }
+}
+
+/* Suggestion terms - Styling the suggestions list */
+.blm-autosuggest__suggestion-terms {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  list-style-type: none;
+  padding: 5px 15px 15px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  row-gap: $terms-row-gap;
+  overflow-y: scroll;
+}
+
+/* Suggestion term link - Styling the link element of a suggestion */
+.blm-autosuggest__suggestion-term-link {
+  text-decoration: none;
+  color: $text-color;
+  display: inline-block;
+  line-height: $line-height;
+
+  &--typed-query {
+    font-weight: normal;
+  }
+}
+
+/* Section results - Displays the category links for a term if they are provided */
+.blm-autosuggest__category-results {
+  list-style-type: none;
+  padding-left: 15px;
+  font-weight: normal;
+  display: flex;
+  flex-direction: column;
+  row-gap: $terms-row-gap;
+}
+
+/* Results container - Styling the box that holds the product suggestions and hides scrollbar of the list */
+.blm-autosuggest__results-container {
+  overflow: hidden;
+  padding-bottom: 25px;
+  padding-right: 15px;
+}
+
+/* Product suggestion results - Displays product suggestions related to the query */
+.blm-autosuggest__results {
+  flex-direction: column;
+  overflow-y: scroll;
+  row-gap: 20px;
+  flex-grow: 1;
+  padding: 15px 15px 10px 15px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Product suggestion - Styling the box of a product suggestion */
+.blm-autosuggest__result {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+
+  &:hover {
+    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 25%);
+  }
+}
+
+/* Last product suggestion - Giving more space after the list */
+.blm-autosuggest__result:last-child {
+  margin-bottom: 15px;
+}
+
+/* Product suggestion image - Styling the product suggestion image */
+.blm-autosuggest-result-image {
+  height: 80px;
+
+  &__link {
+    display: block;
+  }
+
+  &__image {
+    width: 80px;
+    height: auto;
+  }
+}
+
+/* Product suggestion details - Styling the product suggestion content */
+.blm-autosuggest-result-details {
+  padding-left: 10px;
+
+  &__title {
+    color: $text-color;
+    text-decoration: none;
+    line-height: $line-height;
+    padding: 0.1px 0 5px;
+    display: inline-block;
+  }
+
+  &__price {
+    display: block;
+  }
+
+  &__price--final {
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  &__price--original {
+    font-weight: normal;
+    text-decoration: line-through;
+    font-size: 10px;
+  }
+}

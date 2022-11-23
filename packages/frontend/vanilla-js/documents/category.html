@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Category document</title>
+
+  <script id="connector-example">
+    window.bloomreachConnector = {}
+    bloomreachConnector.config = {
+      /* account_id: "6545",
+       domain_key: "sandbox_bornconnector_bigcommerce", */
+      account_id: '6525',
+      domain_key: 'levelninesports',
+      default_search_parameter: 'q',
+      search_page_url: 'http://localhost:3000/documents/product-search.html',
+      // This is an example to a money formatting function that's applied to the displayed prices
+      /* format_money: (priceInCents) => {
+       return `£${(priceInCents / 100.0).toLocaleString(undefined, {
+       minimumFractionDigits: 2,
+       maximumFractionDigits: 2
+       })}`
+       }, */
+      search: {
+        enabled: true,
+        items_per_page: 16,
+        facets_included: true,
+        initial_number_of_facets: 5,
+        initial_number_of_facet_values: 6,
+        infinite_scroll: false,
+        selector: '.main-content',
+        sorting_options: [
+          {label: 'Relevance', value: ''},
+          {label: 'Price (low - high)', value: 'price+asc'},
+          {label: 'Name (A - Z)', value: 'title+asc'},
+          {label: 'Price (high - low)', value: 'price+desc'},
+          {label: 'Name (Z - A)', value: 'title+desc'}
+        ],
+        is_search_page: false,
+        display_variants: false
+      },
+      autosuggest: {
+        enabled: true,
+        number_of_terms: 13,
+        number_of_products: 14,
+        number_of_collections: 12,
+        selector: '.search__input'
+      },
+      category: {
+        enabled: true,
+        // endpoint: 'https://staging-core.dxpapi.com/api/v1/core/',
+        category_id: '276',
+        sorting_options: [
+          {label: 'Price (low - high)', value: 'price+asc'},
+          {label: 'Name (A - Z)', value: 'title+asc'},
+          {label: 'Price (high - low)', value: 'price+desc'},
+          {label: 'Name (Z - A)', value: 'title+desc'},
+          {label: 'Relevance', value: ''}
+        ],
+        items_per_page: '12',
+        facets_included: true,
+        initial_number_of_facets: 5,
+        initial_number_of_facet_values: 6,
+        infinite_scroll: true,
+        selector: '.main-content',
+        is_category_page: true,
+        display_variants: false
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    var br_data = br_data || {}
+    br_data.acct_id = 6525
+    br_data.user_id = undefined
+    br_data.tms = 'gtm'
+    br_data.ptype = 'category'
+    br_data.cat_id = window.category_id
+    br_data.cat = 'Home|snowboard|accessories|helmets'
+    ;(function () {
+      var a = document.createElement('script')
+      a.type = 'text/javascript'
+      a.async = !0
+      a.src =
+        'https:' == document.location.protocol
+          ? 'https://cdns.brsrvr.com/v1/br-trk-6525.js'
+          : 'http://cdn.brcdn.com/v1/br-trk-6525.js'
+      var b = document.getElementsByTagName('script')[0]
+      b.parentNode.insertBefore(a, b)
+    })()
+  </script>
+
+  <link rel="stylesheet" href="/dist/category.css" />
+  <script type="application/javascript" src="/dist/category.js" defer></script>
+</head>
+<body>
+<h1>Category module</h1>
+
+<main class="main-content">Original content...</main>
+</body>
+</html>

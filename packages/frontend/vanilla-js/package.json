@@ -1,0 +1,66 @@
+{
+  "name": "@bloomreach/discovery-ui-js",
+  "version": "3.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rimraf dist dist-pack coverage-ts && rollup -c && yarn ts-coverage",
+    "build:pack": "rimraf dist dist-pack && rollup -c && del dist/** '!(dist/*.js|dist/*.css)' && cp -R src/templates dist/ && zip-build dist/ dist-pack/",
+    "start": "rollup -c -w",
+    "serve": "serve .",
+    "clean": "rimraf dist dist-pack coverage-ts",
+    "ts-coverage": "typescript-coverage-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/borngroup/bloomreach-sdk.git"
+  },
+  "keywords": [],
+  "author": "Bloomreach",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/borngroup/bloomreach-sdk#readme",
+  "dependencies": {
+    "@bloomreach/discovery-api-client": "file:./../../api-client",
+    "@rollup/plugin-json": "^4.1.0",
+    "ejs": "^3.1.8",
+    "tiny-invariant": "^1.2.0"
+  },
+  "devDependencies": {
+    "@optimize-lodash/rollup-plugin": "^3.0.0",
+    "@rollup/plugin-replace": "^4.0.0",
+    "del-cli": "^5.0.0",
+    "rollup-plugin-scss": "^3.0.0",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.55.0",
+    "serve": "^13.0.2",
+    "zip-build": "^1.7.0"
+  },
+  "typeCoverage": {
+    "atLeast": 50,
+    "is": 99,
+    "cache": true,
+    "debug": false,
+    "detail": true,
+    "ignoreCatch": true,
+    "ignoreFiles": [
+      "__tests__/**",
+      "node_modules/**",
+      "lib/**",
+      "dist/**",
+      "**/*.json"
+    ],
+    "strict": true,
+    "suppressError": false,
+    "update": true,
+    "historyFile": "typescript-coverage.json",
+    "noDetailWhenFailed": true,
+    "ignoreUnread": true,
+    "ignoreNested": true,
+    "ignoreAsAssertion": true,
+    "ignoreTypeAssertion": true,
+    "ignoreNonNullAssertion": true,
+    "project": "tsconfig.json",
+    "showRelativePath": true
+  }
+}

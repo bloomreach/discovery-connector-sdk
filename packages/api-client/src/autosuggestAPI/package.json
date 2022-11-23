@@ -1,0 +1,9 @@
+{
+  "name": "@bloomreach/discovery-getsuggestions-api",
+  "version": "1.1.0",
+  "main": "./getSuggestions.index.js",
+  "module": "./getSuggestions.esm.js",
+  "umd:main": "./getSuggestions.umd.js",
+  "source": "./index.ts",
+  "types": "./types.ts"
+}

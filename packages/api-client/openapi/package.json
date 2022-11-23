@@ -1,0 +1,19 @@
+{
+  "name": "@bloomreach/discovery-openapi",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "codegen-product-suggestions-typescript-fetch": "openapi-generator-cli generate -i discovery-product-suggestions-api.yaml -g typescript-fetch --enable-post-process-file -o src/generated-sources/openapi/product-suggestions/typescript-fetch --additional-properties=supportsES6=true,npmName=@bloomreach/discovery-ts-fetch-api-client,typescriptThreePlus=true,withInterfaces=true --verbose",
+    "codegen-product-suggestions-typescript-axios": "openapi-generator-cli generate -i discovery-product-suggestions-api.yaml -g typescript-axios --enable-post-process-file -o src/generated-sources/openapi/product-suggestions/typescript-axios --additional-properties=supportsES6=true,npmName=@bloomreach/discovery-ts-axios-api-client,typescriptThreePlus=true,withInterfaces=false --verbose",
+    "codegen-product-suggestions-typescript": "openapi-generator-cli generate -i discovery-product-suggestions-api.yaml -g typescript --enable-post-process-file -o src/generated-sources/openapi/product-suggestions/typescript --additional-properties=supportsES6=true,--additional-properties=platform=browser,npmName=@bloomreach/discovery-typescript-api-client,typescriptThreePlus=true,withInterfaces=true --verbose",
+    "codegen-product-search-typescript-fetch": "openapi-generator-cli generate -i discovery-product-search-api.yaml -g typescript-fetch --enable-post-process-file -o src/generated-sources/openapi/product-suggestions/typescript-fetch --additional-properties=supportsES6=true,--additional-properties=platform=browser,npmName=@bloomreach/discovery-product-search-api,typescriptThreePlus=true,withInterfaces=true --verbose",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.1",
+    "openapi-types": "^11.0.1"
+  }
+}

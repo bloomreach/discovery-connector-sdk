@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "5ba21280-c5fb-4c4d-9dfc-ff22f7890fba",
+		"name": "Autosuggestion API",
+		"description": "Bloomreach Discovery",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get Product Suggestions",
+			"id": "60f5dddd-39cc-47fc-90dd-efc8921d0fd3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/suggest?account_id=6702&catalog_views=documentation_site&q=cha&request_type=suggest&url=https://www.documentation-site.com",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"suggest"
+					],
+					"query": [
+						{
+							"description": "(Required) Your site's numerical Bloomreach account ID. Your Bloomreach representative gives your site's account ID to you before or during your integration kickoff meeting.",
+							"key": "account_id",
+							"value": "6702"
+						},
+						{
+							"description": "The Bloomreach-provided authentication key for the Bloomreach account that's sending the request.",
+							"key": "auth_key",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"description": "A first-party cookie created by the Bloomreach tracking pixel library (BrTrk). This cookie creates a unique, anonymous identifier for every browser or device.",
+							"key": "_br_uid_2",
+							"value": "uid%3D7797686432023%3Av%3D11.5%3Ats%3D1428617911187%3Ahc%3D55",
+							"disabled": true
+						},
+						{
+							"description": "(Required) A list of catalog views that you want to see in your suggestions. You must specify the catalog name within the catalog view. For Product catalogs, the catalog name is the same value as your domain_key.",
+							"key": "catalog_views",
+							"value": "documentation_site"
+						},
+						{
+							"description": "(Required) Your site visitor's partial search query that Autosuggest should operate on. You can percent encode spaces between terms as %20, or you can leave the spaces unencoded.",
+							"key": "q",
+							"value": "cha"
+						},
+						{
+							"description": "The URL of the page or HTTP referrer where the request is started.",
+							"key": "ref_url",
+							"value": "<string>",
+							"disabled": true
+						},
+						{
+							"description": "The URL of the page or HTTP referrer where the request is started.",
+							"key": "request_id",
+							"value": "<string>",
+							"disabled": true
+						},
+						{
+							"description": "The type of API request. Value should be suggest for Autosuggest requests.",
+							"key": "request_type",
+							"value": "suggest"
+						},
+						{
+							"description": "The URL of the page or HTTP referrer where the request is started.",
+							"key": "url",
+							"value": "https://www.documentation-site.com"
+						}
+					]
+				},
+				"description": "Returns product suggestions based on inputted value"
+			},
+			"response": [
+				{
+					"id": "86a020b7-624a-48ae-8ea9-db83afbafe2e",
+					"name": "200 ok - Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/suggest?account_id=6702&catalog_views=documentation_site&q=cha&request_type=suggest&url=https://www.documentation-site.com",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"suggest"
+							],
+							"query": [
+								{
+									"description": "(Required) Your site's numerical Bloomreach account ID. Your Bloomreach representative gives your site's account ID to you before or during your integration kickoff meeting.",
+									"key": "account_id",
+									"value": "6702"
+								},
+								{
+									"description": "The Bloomreach-provided authentication key for the Bloomreach account that's sending the request.",
+									"key": "auth_key",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"description": "A first-party cookie created by the Bloomreach tracking pixel library (BrTrk). This cookie creates a unique, anonymous identifier for every browser or device.",
+									"key": "_br_uid_2",
+									"value": "uid%3D7797686432023%3Av%3D11.5%3Ats%3D1428617911187%3Ahc%3D55",
+									"disabled": true
+								},
+								{
+									"description": "(Required) A list of catalog views that you want to see in your suggestions. You must specify the catalog name within the catalog view. For Product catalogs, the catalog name is the same value as your domain_key.",
+									"key": "catalog_views",
+									"value": "documentation_site"
+								},
+								{
+									"description": "(Required) Your site visitor's partial search query that Autosuggest should operate on. You can percent encode spaces between terms as %20, or you can leave the spaces unencoded.",
+									"key": "q",
+									"value": "cha"
+								},
+								{
+									"description": "The URL of the page or HTTP referrer where the request is started.",
+									"key": "ref_url",
+									"value": "<string>",
+									"disabled": true
+								},
+								{
+									"description": "The URL of the page or HTTP referrer where the request is started.",
+									"key": "request_id",
+									"value": "<string>",
+									"disabled": true
+								},
+								{
+									"description": "The type of API request. Value should be suggest for Autosuggest requests.",
+									"key": "request_type",
+									"value": "suggest"
+								},
+								{
+									"description": "The URL of the page or HTTP referrer where the request is started.",
+									"key": "url",
+									"value": "https://www.documentation-site.com"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 07 Apr 2022 00:44:22 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx/1.14.2"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "null"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST, GET, OPTIONS"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Content-Type, X-BR-Response-Time"
+						},
+						{
+							"key": "Access-Control-Expose-Headers",
+							"value": "Content-Type, X-BR-Response-Time"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "X-Upstream",
+							"value": "2673668f4d100852279fc36bfe02f30d43a6320d628f3170af08952d2cd6cbed"
+						},
+						{
+							"key": "X-Request-ID",
+							"value": "b867252a68694fe2aea962a1b5bd6812"
+						},
+						{
+							"key": "X-BR-Response-Time",
+							"value": "0.010"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"queryContext\": {\n        \"originalQuery\": \"cha\"\n    },\n    \"suggestionGroups\": [\n        {\n            \"catalogName\": \"documentation_site\",\n            \"view\": \"default\",\n            \"querySuggestions\": [\n                {\n                    \"query\": \"channel nut\",\n                    \"displayText\": \"channel nut\"\n                },\n                {\n                    \"query\": \"chance bolt\",\n                    \"displayText\": \"chance bolt\"\n                },\n                {\n                    \"query\": \"channel spring nut\",\n                    \"displayText\": \"channel spring nut\"\n                },\n                {\n                    \"query\": \"chance cable cutter\",\n                    \"displayText\": \"chance cable cutter\"\n                },\n                {\n                    \"query\": \"jack chain\",\n                    \"displayText\": \"jack chain\"\n                },\n                {\n                    \"query\": \"chance\",\n                    \"displayText\": \"chance\"\n                }\n            ],\n            \"searchSuggestions\": [\n                {\n                    \"sale_price\": 9.34,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/36800?_br_psugg_q=channel+nut\",\n                    \"pid\": \"36800\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_36800\",\n                    \"title\": \"B-Line TN228ZN Channel Twirl Nut\"\n                },\n                {\n                    \"sale_price\": 8.18,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/36801?_br_psugg_q=channel+nut\",\n                    \"pid\": \"36801\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_36801\",\n                    \"title\": \"B-Line TN224ZN Channel Twirl Nut\"\n                },\n                {\n                    \"sale_price\": 9.02,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/4093778?_br_psugg_q=channel+nut\",\n                    \"pid\": \"4093778\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_4093778\",\n                    \"title\": \"Thomas & Betts 5/16 Self-Holding Nuts\"\n                },\n                {\n                    \"sale_price\": 8.69,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/3986668?_br_psugg_q=channel+nut\",\n                    \"pid\": \"3986668\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_3986668\",\n                    \"title\": \"Thomas & Betts 1/4 Self-Holding Nuts\"\n                },\n                {\n                    \"sale_price\": 3.5,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/3099493?_br_psugg_q=channel+nut\",\n                    \"pid\": \"3099493\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_3099493\",\n                    \"title\": \"Thomas & Betts 1/2 Self-Holding Nuts\"\n                },\n                {\n                    \"sale_price\": 3.41,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/4093777?_br_psugg_q=channel+nut\",\n                    \"pid\": \"4093777\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_4093777\",\n                    \"title\": \"Thomas & Betts 5/16 Self-Holding Nuts\"\n                },\n                {\n                    \"sale_price\": 3.24,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/3099499?_br_psugg_q=channel+nut\",\n                    \"pid\": \"3099499\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_3099499\",\n                    \"title\": \"Thomas & Betts 3/8 Self-Holding Nuts\"\n                },\n                {\n                    \"sale_price\": 3.88,\n                    \"url\": \"https://pacificsupply.bloomreach.com/products/11482?_br_psugg_q=channel+nut\",\n                    \"pid\": \"11482\",\n                    \"thumb_image\": \"https://pacific-demo-data.bloomreach.cloud/supply/images/thumbimage_pid_11482\",\n                    \"title\": \"B-Line N228ZN Channel Spring Nut\"\n                }\n            ],\n            \"product_suggest_query\": null,\n            \"attributeSuggestions\": [\n                {\n                    \"name\": \"Strut Nuts\",\n                    \"value\": \"PNB160402011100\",\n                    \"attributeType\": \"category\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f248f1c8-c0dc-409e-9441-8ef2a6c81c9b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "af1c3882-a5d3-4daa-8417-97ea1fd9bb20",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d3a7ab86-04c4-4096-adf5-f6ed6c349f08",
+			"key": "baseUrl",
+			"value": "https://suggest.dxpapi.com/api/v2",
+			"type": "string"
+		},
+		{
+			"id": "504daedd-ef6b-46f8-b742-23143882bc2b",
+			"key": "_br_uid_2",
+			"value": "3D7797686432023",
+			"type": "any"
+		},
+		{
+			"id": "37d5a1dd-8caa-420d-b0cc-f67207c21c32",
+			"key": "q",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,25 @@
+.header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  padding: 0;
+  background: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  }
+/* Logo Styling */
+.logo {
+  display: block;
+  height: 1em;
+  margin-top: 10px;
+  margin-left: 0.5rem;
+  }
+
+.header nav {
+  display: inline-block;
+  font-size: 100%;
+  position: absolute;
+  }
+

@@ -1,0 +1,29 @@
+/* Style the links inside the nav bar */
+.topnav {
+  top: 20px;
+  display: inline-block;
+  border: #1b1b1b 2px;
+  font-family: sans-serif;
+  font-weight: bold;
+  left: 225px;
+  position: absolute;
+  width: 500px;
+  }
+.topnav a {
+  display: inline-block;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 15px;
+  min-width: 50px;
+  text-align: center;
+  background: rgba(255,255,255,0);
+  text-decoration: none;
+  color: #000000;
+  will-change: background-color;
+  }
+
+.topnav a:hover,
+
+.topnav a.active {
+  text-underline: rgba(0,0,0,0.4);
+  }

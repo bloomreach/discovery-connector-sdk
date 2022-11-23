@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "plugins": [],
+    "extends": [
+        "stylelint-config-standard-scss",
+        "stylelint-config-prettier-scss"
+    ],
+  "ignoreFiles": [],
+  "rules": {}
+}
+
+
+
+
+

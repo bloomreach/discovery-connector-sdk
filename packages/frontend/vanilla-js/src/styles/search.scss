@@ -1,0 +1,17 @@
+// Product Search component - Displays product search data returned from the product search API
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.blm-product-search {
+  max-width: 1140px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+
+  @import 'search-and-category';
+}
+
+@import 'general-elements';

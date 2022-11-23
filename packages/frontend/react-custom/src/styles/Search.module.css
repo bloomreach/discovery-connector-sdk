@@ -1,0 +1,102 @@
+.search {
+  /* Style the search box inside the navigation bar */
+  align-items: center;
+  background-color: rgba(142,142,147,0.12);
+  border-radius: 8px;
+  bottom: 5px;
+  display: block;
+  flex-direction: row;
+  float:right;
+  font-family: sans-serif;
+  height: 30px;
+  justify-content: center;
+  margin-right: 28px;
+  position: relative;
+  }
+
+/* Styles search input box */
+.search input {
+  background: transparent;
+  border: rgba(142,142,147,0.12);
+  height: 30px;
+  line-height: 1.25em; /* 20px */
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  padding-left: 10px; /* recommend setting to 30 if placing icon in front of text */
+  padding-right: 30px;
+  }
+
+/* Controls behavior when user hovers over or focuses on search bar */
+.search:hover, .search:focus {
+  border: none;
+  background-color: white;
+  font-weight: 400;
+  }
+
+/* Sets search-icon inside search box */
+.searchIcon {
+  background: transparent;
+  cursor: pointer;
+  position: absolute;
+  }
+
+.no-suggestions {
+  color: #999;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  }
+
+/* Suggestions Drop Down Container */
+.suggestions {
+  border: 1px solid #999;
+  border-top-width: 0;
+  background: #e5e8e8;
+  left: 0;
+  list-style: none;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 0; /* removes left side padding from suggestions */
+  position: absolute;
+  top: 35px;
+  width: 100%;
+  }
+
+.suggestions::-webkit-scrollbar {
+  width: 0.2rem;
+  height: 0;
+  border-radius: 20px;
+  }
+
+.suggestions::-webkit-scrollbar-thumb {
+  background-color: hsla(218, 100%, 42%, 1);
+  }
+
+/* Suggestion Items */
+.suggestions li {
+  display: block;
+  cursor: pointer;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  padding: 0.5rem;
+  }
+
+.active {
+  background-color: #0069ff;
+  color: #FAFBFC;
+  }
+
+.suggestions li:hover {
+  background: linear-gradient(
+    90deg,
+    hsla(218, 100%, 42%, 0.6) 0%,
+    hsla(0, 0%, 98%, 1) 200%
+  );
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  }
+
+/* Places border around list items */
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+  }

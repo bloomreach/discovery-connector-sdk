@@ -1,0 +1,9 @@
+{
+  "name": "@bloomreach/discovery-getrecommendationwidgets-api",
+  "version": "1.1.0",
+  "main": "./getRecommendationWidgetss.index.js",
+  "module": "./getRecommendationWidgetss.esm.js",
+  "umd:main": "./getRecommendationWidgetss.umd.js",
+  "source": "./index.ts",
+  "types": "./types.ts"
+}

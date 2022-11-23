@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Autosuggest Products API
+  description: Bloomreach Discovery
+paths:
+  /suggest:
+    get:
+      description: Returns product suggestions based on inputted value
+      tags: [autosuggest]
+      operationId: getProductSuggestions
+
+      # query - Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id.
+      # https://swagger.io/specification/#parameter-object
+      parameters:
+        - in: query
+          name: account_id
+          description: Your site's numerical Bloomreach account ID. Your Bloomreach representative gives your site's account ID to you before or during your integration kickoff meeting.
+          example: 6702
+          required: true
+          allowEmptyValue: false
+          schema: {
+            type: integer,
+            format: int32
+          }
+
+
+        - in: query
+          name: auth_key
+          description: The Bloomreach-provided authentication key for the Bloomreach account that's sending the request.
+          required: false
+          allowEmptyValue: true
+          schema: {type: string}
+
+
+        - in: query
+          name: _br_uid_2
+          description: A first-party cookie created by the Bloomreach tracking pixel library (BrTrk). This cookie creates a unique, anonymous identifier for every browser or device.
+          example: uid%3D7797686432023%3Av%3D11.5%3Ats%3D1428617911187%3Ahc%3D55
+          required: false
+          allowEmptyValue: false
+          schema: {type: string}
+
+
+        - in: query
+          name: catalog_views
+          description: A list of catalog views that you want to see in your suggestions. You must specify the catalog name within the catalog view. For Product catalogs, the catalog name is the same value as your domain_key.
+          example: documentation_site
+          required: true
+          allowEmptyValue: false
+          schema: {type: string}
+
+        - in: query
+          name: q
+          description: Your site visitor's partial search query that Autosuggest should operate on. You can percent encode spaces between terms as %20, or you can leave the spaces unencoded.
+          example: cha
+          required: true
+          allowEmptyValue: false
+          schema: {type: string}
+
+        - in: query
+          name: ref_url
+          description: The URL of the page or HTTP referrer where the request is started.
+          example: https://localhost
+          required: false
+          allowEmptyValue: false
+          schema: {type: string}
+
+        - in: query
+          name: request_id
+          description: The URL of the page or HTTP referrer where the request is started.
+          required: false
+          allowEmptyValue: false
+          schema: {type: string}
+
+        - in: query
+          name: request_type
+          description: The type of API request. Value should be suggest for Autosuggest requests.
+          required: false
+          example: suggest
+          allowEmptyValue: false
+          schema: { type: string }
+
+        - in: query
+          name: url
+          description: The URL of the page or HTTP referrer where the request is started.
+          example: https://www.documentation-site.com
+          schema: {type: string}
+
+
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                items:
+                  $ref: "#/components/schemas/AutosuggestResponseV2"
+
+servers:
+  - url: "https://suggest.dxpapi.com/api/v2"
+
+components:
+  schemas:
+    AutosuggestResponseV2:
+      type: object
+      properties:
+        #queryContext
+        queryContext:
+          type: object
+          properties:
+            originalQuery:
+              type: string
+        # suggestionGroups
+        suggestionGroups:
+          type: array
+          items:
+            type: object
+            properties:
+              #querySuggestions
+              querySuggestions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    query:
+                      type: string
+                    displayText:
+                      type: string
+              #serachSuggestions
+              searchSuggestions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    sale_price:
+                      type: string
+                    url:
+                      type: string
+                    pid:
+                      type: string
+                    thumb_image:
+                      type: string
+                    title:
+                      type: string
