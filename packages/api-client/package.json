@@ -28,6 +28,8 @@
   },
   "devDependencies": {
     "lint-staged": "^10.5.4",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.75.5",
     "semver": "^7.3.5",
     "serve": "^12.0.0",
     "ts-jest": "^26.5.4",

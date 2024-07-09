@@ -29,6 +29,8 @@
     "@optimize-lodash/rollup-plugin": "^3.0.0",
     "@rollup/plugin-replace": "^4.0.0",
     "del-cli": "^5.0.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.75.5",
     "rollup-plugin-scss": "^3.0.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2",
