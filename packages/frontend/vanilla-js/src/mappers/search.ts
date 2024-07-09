@@ -1,4 +1,16 @@
-import { SearchResponse, SearchResponseDoc } from '@bloomreach/discovery-api-client/src/getSearchResultsAPI';
+import type {
+  SearchResponse,
+  SearchResponseDoc,
+  SearchResponseFacetCounts,
+  SearchResponseFacetCountsFacetFieldsCategory,
+  SearchResponseFacetCountsFacetFieldsGeneral,
+  SearchResponseFacetCountsV3,
+  SearchResponseStats,
+  SearchResponseFacetCountsV3FacetsCategory as V3FacetsCategory,
+  SearchResponseFacetCountsV3FacetsGeneral as V3FacetsGeneral,
+  SearchResponseFacetCountsV3FacetsRange as V3FacetsRange,
+  SearchResponseFacetCountsV3FacetsStats as V3FacetsStats,
+} from '@bloomreach/discovery-api-client/src/getSearchResultsAPI';
 import type * as TemplateData from '../types/search-template-data';
 import { buildSearchConfig } from '../utils';
 
@@ -7,55 +19,11 @@ export function mapSearchApiResponse(
 ): TemplateData.SearchTemplateData {
 
   const config = buildSearchConfig();
+  const facets = responseData?.facet_counts ? (
+    isV3Facets(responseData.facet_counts) ? mapFacetsV3(responseData.facet_counts) : mapFacets(responseData.facet_counts, responseData.stats)
+  ) : { facets: [] };
   return {
-    facets: Object.entries(responseData?.facet_counts?.facet_fields as object || {}).map(
-      (fieldName) => {
-        return {
-          original_title: fieldName[0],
-          title: fieldName[0]
-            .replace('_', ' ')
-            .replace(/\b\w/g, (l) => l.toUpperCase()),
-          section: fieldName[1].map((section: any) => {
-            if (section.name === 'true') {
-              section.name = 'Yes';
-            } else if (section.name === 'false') {
-              section.name = 'No';
-            }
-            return {
-              count: section.count,
-              name: section.cat_name || section.name,
-              id: section.cat_id || section.name
-            };
-          })
-        };
-      }
-    ).filter(facet => facet.section.length),
-
-    ...(responseData?.facet_counts?.facet_ranges?.price
-      ? {
-          priceRanges: responseData.facet_counts.facet_ranges.price.map(
-            (range) => ({
-              count: range.count,
-              start: range.start.toString(),
-              end: range.end.toString()
-            })
-          )
-        }
-      : {}),
-
-    ...(responseData?.stats?.stats_fields?.price
-      ? {
-          maxPrice: responseData.stats.stats_fields.price.max,
-          minPrice: responseData.stats.stats_fields.price.min
-        }
-      : {}),
-
-    ...(responseData?.stats?.stats_fields?.sale_price
-      ? {
-          maxPrice: responseData.stats.stats_fields.sale_price.max,
-          minPrice: responseData.stats.stats_fields.sale_price.min
-        }
-      : {}),
+    ...facets,
 
     products: processDocs(responseData.response?.docs || []),
 
@@ -113,6 +81,120 @@ export function mapSearchApiResponse(
       }
       : {}
     )
+  };
+}
+
+function isV3Facets(facetCounts: SearchResponseFacetCounts | SearchResponseFacetCountsV3): facetCounts is SearchResponseFacetCountsV3 {
+  return 'facets' in facetCounts;
+}
+
+type FacetsType = Pick<TemplateData.SearchTemplateData, 'facets' | 'priceRanges' | 'maxPrice' | 'minPrice'>;
+
+function mapFacets(facetCounts: SearchResponseFacetCounts, stats?: SearchResponseStats): FacetsType {
+  return {
+    facets: Object.entries(facetCounts.facet_fields as object || {}).map(
+      (fieldName) => {
+        return {
+          original_title: fieldName[0],
+          title: fieldName[0]
+            .replace('_', ' ')
+            .replace(/\b\w/g, (l) => l.toUpperCase()),
+          section: fieldName[1].map((section: any) => {
+            if (section.name === 'true') {
+              section.name = 'Yes';
+            } else if (section.name === 'false') {
+              section.name = 'No';
+            }
+            return {
+              count: section.count,
+              name: section.cat_name || section.name,
+              id: section.cat_id || section.name
+            };
+          })
+        };
+      }
+    ).filter(facet => facet.section.length),
+
+    ...(facetCounts.facet_ranges?.price
+      ? {
+          priceRanges: facetCounts.facet_ranges.price.map(
+            (range) => ({
+              count: range.count,
+              start: range.start.toString(),
+              end: range.end.toString()
+            })
+          )
+        }
+      : {}),
+
+    ...(stats?.stats_fields?.price
+      ? {
+          maxPrice: stats.stats_fields.price.max,
+          minPrice: stats.stats_fields.price.min
+        }
+      : {}),
+
+    ...(stats?.stats_fields?.sale_price
+      ? {
+          maxPrice: stats.stats_fields.sale_price.max,
+          minPrice: stats.stats_fields.sale_price.min
+        }
+      : {}),
+  };
+}
+
+function mapFacetsV3(facetCounts: SearchResponseFacetCountsV3): FacetsType {
+  const facets = facetCounts.facets?.filter((facet): facet is V3FacetsCategory | V3FacetsGeneral => (facet.type === 'text' || facet.type === 'number'))
+    .filter(facet => facet.value.length)
+    .map(facet => ({
+      original_title: facet.name,
+      title: facet.name
+        .replace('_', ' ')
+        .replace(/\b\w/g, (l) => l.toUpperCase()),
+      section: facet.value.map((value: SearchResponseFacetCountsFacetFieldsCategory | SearchResponseFacetCountsFacetFieldsGeneral) => {
+        let name: string;
+        let id: string;
+        if ('name' in value) {
+          if (value.name === 'true') {
+            name = 'Yes';
+          } else if (value.name === 'false') {
+            name = 'No';
+          } else {
+            name = value.name;
+          }
+          id = name;
+        } else {
+          name = value.cat_name ?? '';
+          id = value.cat_id ?? '';
+        }
+
+        return {
+          count: value.count ?? 0,
+          name,
+          id,
+        };
+      }),
+    })) ?? [];
+
+  const priceRanges = facetCounts.facets?.filter((facet): facet is V3FacetsRange => facet.type === 'number_range')
+    .find(facet => facet.name.toLowerCase() === 'price')?.value.map(range => ({
+      count: range.count,
+      start: range.start.toString(),
+      end: range.end.toString(),
+    }));
+
+  const stats = facetCounts.facets?.filter((facet): facet is V3FacetsStats => facet.type === 'number_stats')
+    .map(facet => ({ name: facet.name.toLowerCase(), value: facet.value }));
+  const statsValue = (stats?.find(facet => facet.name === 'sale price' || facet.name === 'sale_price') ?? stats?.find(facet => facet.name === 'price'))?.value;
+  const priceStats = statsValue ? {
+    maxPrice: statsValue.end,
+    minPrice: statsValue.start,
+  } : undefined;
+
+  return {
+    facets,
+    ...(priceRanges ? { priceRanges } : {}),
+    ...(priceStats ?? {}),
   };
 }
 

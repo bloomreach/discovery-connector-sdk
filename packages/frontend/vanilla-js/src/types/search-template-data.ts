@@ -98,8 +98,8 @@ export interface SearchTemplateData {
   checkedFacets?: {[key: string]: string[]}
   priceRanges?: PriceRange[]
   priceRangeFacet?: {start: number; end: number}
-  maxPrice?: number
-  minPrice?: number
+  maxPrice?: number | '*'
+  minPrice?: number | '*'
   defaultCurrency?: string
   isFiltersPanelOpened?: boolean
   mobileView?: {matches: boolean}

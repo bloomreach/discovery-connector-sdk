@@ -420,5 +420,9 @@ function buildApiCallParameters() {
     apiParameters.cdp_segments = segmentationData;
   }
 
+  if (config.search.force_v3_facets) {
+    apiParameters['facet.version'] = '3.0';
+  }
+
   return apiParameters;
 }

@@ -173,6 +173,11 @@ export interface GetSearchResultsRequest {
    */
   group_limit?: number;
 
+  /**
+   * Force to use a different facet response version (e.g. 3.0).
+   */
+  'facet.version'?: string;
+
 }; typeof {};
 
 /**
@@ -270,13 +275,13 @@ export interface SearchResponseFacetCountsFacetRangesPrice {
    * @type {number}
    * @memberof SearchResponseFacetCountsFacetRangesPrice
    */
-  start: number;
+  start: number | '*';
   /**
    *
    * @type {number}
    * @memberof SearchResponseFacetCountsFacetRangesPrice
    */
-  end: number;
+  end: number | '*';
 }
 /**
  *
@@ -309,6 +314,67 @@ export interface SearchResponseFacetCounts {
    * @memberof SearchResponseFacetCounts
    */
   facet_fields?: SearchResponseFacetCountsFacetFields;
+  /**
+   *
+   * @type {object}
+   * @memberof SearchResponseFacetCounts
+   */
+  facet_queries?: object;
+}
+/**
+ * @export
+ * @type SearchResponseFacetCountsV3FacetsCategory
+ */
+export interface SearchResponseFacetCountsV3FacetsCategory {
+  name: 'category';
+  type: 'text';
+  value: SearchResponseFacetCountsFacetFieldsCategory[];
+}
+/**
+ * @export
+ * @type SearchResponseFacetCountsV3FacetsGeneral
+ */
+export interface SearchResponseFacetCountsV3FacetsGeneral {
+  name: string;
+  type: 'number' | 'text';
+  value: SearchResponseFacetCountsFacetFieldsGeneral[];
+}
+/**
+ * @export
+ * @type SearchResponseFacetCountsV3FacetsRange
+ */
+export interface SearchResponseFacetCountsV3FacetsRange {
+  name: string;
+  type: 'number_range';
+  value: SearchResponseFacetCountsFacetRangesPrice[];
+}
+/**
+ * @export
+ * @type SearchResponseFacetCountsV3FacetsStats
+ */
+export interface SearchResponseFacetCountsV3FacetsStats {
+  name: string;
+  type: 'number_stats';
+  value: SearchResponseFacetCountsFacetRangesPrice;
+}
+/**
+ *
+ * @export
+ * @type SearchResponseFacetCountsV3Facets
+ */
+export type SearchResponseFacetCountsV3Facets = SearchResponseFacetCountsV3FacetsCategory | SearchResponseFacetCountsV3FacetsGeneral | SearchResponseFacetCountsV3FacetsRange | SearchResponseFacetCountsV3FacetsStats;
+/**
+ *
+ * @export
+ * @interface SearchResponseFacetCountsV3
+ */
+export interface SearchResponseFacetCountsV3 {
+  /**
+   *
+   * @type {Array<SearchResponseFacetCountsFacetFields>}
+   * @memberof SearchResponseFacetCounts
+   */
+  facets?: SearchResponseFacetCountsV3Facets[];
   /**
    *
    * @type {object}
@@ -622,10 +688,10 @@ export interface SearchResponse {
   group_response?: SearchResponseGroupResponse;
   /**
    *
-   * @type {SearchResponseFacetCounts}
+   * @type {SearchResponseFacetCounts | SearchResponseFacetCountsV3}
    * @memberof SearchResponse
    */
-  facet_counts?: SearchResponseFacetCounts;
+  facet_counts?: SearchResponseFacetCounts | SearchResponseFacetCountsV3;
   /**
    *
    * @type {object}
