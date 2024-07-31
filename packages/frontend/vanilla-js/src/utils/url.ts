@@ -94,6 +94,7 @@ export function decrementParameterInUrl(parameterName: string): void {
 
 export function buildPriceUrlParameterObject(): { price?: string } {
   const currentSearchRequestState = getCurrentSearchRequestState();
+  const checkedFacets = getFacetsFromUrl();
 
   const priceRangeLowerBoundaryInput = document.querySelector(
     '.blm-price-range-input--lower'
@@ -105,7 +106,12 @@ export function buildPriceUrlParameterObject(): { price?: string } {
   let lowerBoundary = parseFloat((priceRangeLowerBoundaryInput as HTMLInputElement).value);
   let upperBoundary = parseFloat((priceRangeUpperBoundaryInput as HTMLInputElement).value);
 
-  if (lowerBoundary === upperBoundary) {
+  // swap lower and upper boundaries if lower > upper
+  if (lowerBoundary > upperBoundary) {
+    [lowerBoundary, upperBoundary] = [upperBoundary, lowerBoundary];
+  }
+
+  if (lowerBoundary === upperBoundary && (lowerBoundary > currentSearchRequestState.price_range_min_value || upperBoundary < currentSearchRequestState.price_range_max_value)) {
     if (upperBoundary === currentSearchRequestState.price_range_max_value) {
       lowerBoundary -= 1;
     } else {
@@ -114,8 +120,9 @@ export function buildPriceUrlParameterObject(): { price?: string } {
   }
 
   if (
+    !checkedFacets.price &&
     upperBoundary === currentSearchRequestState.price_range_max_value &&
-    Number(lowerBoundary) === 0
+    (lowerBoundary === currentSearchRequestState.price_range_min_value || Number(lowerBoundary) === 0)
   ) {
     return {};
   }

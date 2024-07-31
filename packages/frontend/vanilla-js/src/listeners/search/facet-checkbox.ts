@@ -1,5 +1,5 @@
 import { PARAMETER_NAME_FACETS, PARAMETER_NAME_PAGE } from '../../constants';
-import { initiateSearch } from '../../modules/builders';
+import { initiateSearch, updateCurrentSearchRequestState } from '../../modules/builders';
 import { resetLoadingIndicator, updateMultipleInstanceParametersInUrl, getCheckedFacetValues, buildPriceUrlParameterObject, updateParameterInUrl } from '../../utils';
 
 function buildFacetCheckboxChangeListener() {
@@ -25,6 +25,11 @@ function buildFacetCheckboxChangeListener() {
       }
     );
     updateParameterInUrl(PARAMETER_NAME_PAGE, '1');
+    // reset price range
+    updateCurrentSearchRequestState({
+      price_range_min_value: 0,
+      price_range_max_value: 0,
+    });
     initiateSearch({ toReplace: true }).catch(console.error);
   };
 }
