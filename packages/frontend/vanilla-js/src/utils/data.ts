@@ -84,7 +84,7 @@ export const convertFacetsToQueryString = (facets: {
                 return encodeURIComponent(
                     // @ts-ignore
                     `${facetName}:[${facets[facetName]
-                        .map((value: string) => `${value}`)
+                        .map((value: string) => `${value || '*'}`)
                         .join(' TO ')}]`
                 );
             }

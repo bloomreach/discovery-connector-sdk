@@ -29,6 +29,7 @@ export interface ConnectorConfig {
     fields?: string;
     groupby?: string;
     group_limit?: number;
+    force_v3_facets?: boolean;
   };
   autosuggest?: {
     enabled: boolean;
@@ -60,6 +61,7 @@ export interface ConnectorConfig {
     fields?: string;
     groupby?: string;
     group_limit?: number;
+    force_v3_facets?: boolean;
   };
   widget?: {
     endpoint?: string;

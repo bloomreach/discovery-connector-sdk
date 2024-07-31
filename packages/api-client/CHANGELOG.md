@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2024-07-15
+
+### Changed
+
+Add support for V3 Facet response.
+
 ## [2.0.0] - 2022-07-20
 
 ### Changed
