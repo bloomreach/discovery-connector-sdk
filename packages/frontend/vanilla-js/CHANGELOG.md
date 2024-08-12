@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.1] - 2024-08-12
+
+### Fixed
+
+Fix Pathways & Recommendations widgets not picking up the `fields` config.
+
 ## [3.1.0] - 2024-07-15
 
 ### Changed

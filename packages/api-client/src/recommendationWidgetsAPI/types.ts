@@ -9,111 +9,50 @@ export type WidgetTypes =
   | 'personalized'
   | 'global';
 
-export interface GetCategoryWidgetRequest {
-  endpoint?: string
-  id: string
-  auth_key?: string
-  account_id: number
-  domain_key: string
-  request_id: number
-  _br_uid_2: string
-  ref_url: string
-  url: string
-  sort?: SortByOptions
-  fields?: string
+export interface CommonWidgetRequest {
+  endpoint?: string;
+  id: string;
+  type: WidgetTypes;
+  auth_key?: string;
+  account_id: number;
+  domain_key: string;
+  request_id: number;
+  _br_uid_2: string;
+  ref_url: string;
+  url: string;
+  sort?: SortByOptions;
+  fields?: string;
   rows: number;
   start: number;
   brSeg?: string;
   segment?: string;
   cdp_segments?: string;
+}
+
+export interface GetCategoryWidgetRequest extends CommonWidgetRequest {
   cat_id: string;
 }
 
-export interface GetKeywordWidgetRequest {
-  endpoint?: string
-  id: string
-  auth_key?: string
-  account_id: number
-  domain_key: string
-  request_id: number
-  _br_uid_2: string
-  ref_url: string
-  url: string
-  sort?: SortByOptions
-  fields?: string
-  rows: number;
-  start: number;
-  brSeg?: string;
-  segment?: string;
-  cdp_segments?: string;
+export interface GetKeywordWidgetRequest extends CommonWidgetRequest {
   query: string;
 }
 
-export interface GetGlobalWidgetRequest {
-  endpoint?: string
-  id: string
-  auth_key?: string
-  account_id: number
-  domain_key: string
-  request_id: number
-  _br_uid_2: string
-  ref_url: string
-  url: string
-  sort?: SortByOptions
-  fields?: string
-  rows: number;
-  start: number;
-  brSeg?: string;
-  segment?: string;
-  cdp_segments?: string;
-}
+export type GetGlobalWidgetRequest = CommonWidgetRequest;
 
-export interface GetPersonalizedWidgetRequest {
-  endpoint?: string
-  id: string
-  auth_key?: string
-  account_id: number
-  domain_key: string
-  request_id: number
-  _br_uid_2: string
-  ref_url: string
-  url: string
-  sort?: SortByOptions
-  fields?: string
-  rows: number;
-  start: number;
-  brSeg?: string;
-  segment?: string;
-  cdp_segments?: string;
+export interface GetPersonalizedWidgetRequest extends CommonWidgetRequest {
   user_id?: string;
 }
 
-export interface GetItemWidgetRequest {
-  endpoint?: string
-  id: string
-  auth_key?: string
-  account_id: number
-  domain_key: string
-  request_id: number
-  _br_uid_2: string
-  ref_url: string
-  url: string
-  sort?: SortByOptions
-  fields?: string
-  rows: number;
-  start: number;
-  brSeg?: string;
-  segment?: string;
-  cdp_segments?: string;
-  item_ids?: string[];
+export interface GetItemWidgetRequest extends CommonWidgetRequest {
+  item_ids?: string;
 }
 
 export type GetWidgetRequest =
-  { type: WidgetTypes } & (GetCategoryWidgetRequest
+  GetCategoryWidgetRequest
   | GetKeywordWidgetRequest
   | GetGlobalWidgetRequest
   | GetPersonalizedWidgetRequest
-  | GetItemWidgetRequest);
+  | GetItemWidgetRequest;
 
 export interface Query {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
