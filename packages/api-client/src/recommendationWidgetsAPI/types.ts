@@ -9,7 +9,7 @@ export type WidgetTypes =
   | 'personalized'
   | 'global';
 
-export interface CommonWidgetRequest {
+export interface WidgetRequestType {
   endpoint?: string;
   id: string;
   type: WidgetTypes;
@@ -29,21 +29,21 @@ export interface CommonWidgetRequest {
   cdp_segments?: string;
 }
 
-export interface GetCategoryWidgetRequest extends CommonWidgetRequest {
+export interface GetCategoryWidgetRequest extends WidgetRequestType {
   cat_id: string;
 }
 
-export interface GetKeywordWidgetRequest extends CommonWidgetRequest {
+export interface GetKeywordWidgetRequest extends WidgetRequestType {
   query: string;
 }
 
-export type GetGlobalWidgetRequest = CommonWidgetRequest;
+export type GetGlobalWidgetRequest = WidgetRequestType;
 
-export interface GetPersonalizedWidgetRequest extends CommonWidgetRequest {
+export interface GetPersonalizedWidgetRequest extends WidgetRequestType {
   user_id?: string;
 }
 
-export interface GetItemWidgetRequest extends CommonWidgetRequest {
+export interface GetItemWidgetRequest extends WidgetRequestType {
   item_ids?: string;
 }
 

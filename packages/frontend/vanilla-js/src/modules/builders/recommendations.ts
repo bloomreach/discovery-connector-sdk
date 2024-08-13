@@ -21,7 +21,7 @@ import {
   getKeywordWidget,
   getPersonalizedWidget,
   generateRequestId,
-  type CommonWidgetRequest,
+  type WidgetRequestType,
   type WidgetTypes,
   type GetWidgetRequest,
   type GetCategoryWidgetRequest,
@@ -145,7 +145,7 @@ function buildApiCallParameters(widgetNode: Node): GetWidgetRequest {
 
   const widgetAttributes: DOMStringMap = (widgetNode as HTMLElement).dataset;
 
-  const apiParameters: CommonWidgetRequest = {
+  const apiParameters: WidgetRequestType = {
     ...(config?.widget?.endpoint ? { endpoint: config.widget.endpoint } : {}),
     ...(config?.widget?.fields ? { fields: config.widget.fields } : {}),
     type: widgetAttributes.type as WidgetTypes,
@@ -234,23 +234,23 @@ function storeSegmentationPixelData() {
   }
 }
 
-function isKeywordWidgetRequest(apiCallParameters: CommonWidgetRequest): apiCallParameters is GetKeywordWidgetRequest {
+function isKeywordWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetKeywordWidgetRequest {
   return apiCallParameters.type === 'keyword';
 }
 
-function isCategoryWidgetRequest(apiCallParameters: CommonWidgetRequest): apiCallParameters is GetCategoryWidgetRequest {
+function isCategoryWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetCategoryWidgetRequest {
   return apiCallParameters.type === 'category';
 }
 
-function isItemWidgetRequest(apiCallParameters: CommonWidgetRequest): apiCallParameters is GetItemWidgetRequest {
+function isItemWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetItemWidgetRequest {
   return apiCallParameters.type === 'item';
 }
 
-function isPersonalizedWidgetRequest(apiCallParameters: CommonWidgetRequest): apiCallParameters is GetPersonalizedWidgetRequest {
+function isPersonalizedWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetPersonalizedWidgetRequest {
   return apiCallParameters.type === 'personalized';
 }
 
-function isGlobalWidgetRequest(apiCallParameters: CommonWidgetRequest): apiCallParameters is GetGlobalWidgetRequest {
+function isGlobalWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetGlobalWidgetRequest {
   return apiCallParameters.type === 'global';
 }
 
