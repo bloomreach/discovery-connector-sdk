@@ -20,10 +20,17 @@ import {
   getItemWidget,
   getKeywordWidget,
   getPersonalizedWidget,
-  generateRequestId
+  generateRequestId,
+  type WidgetRequestType,
+  type WidgetTypes,
+  type GetWidgetRequest,
+  type GetCategoryWidgetRequest,
+  type GetGlobalWidgetRequest,
+  type GetItemWidgetRequest,
+  type GetKeywordWidgetRequest,
+  type GetPersonalizedWidgetRequest,
+  type RecommendationWidgetsResponseV2,
 } from '@bloomreach/discovery-api-client';
-import type { GetCategoryWidgetRequest, GetGlobalWidgetRequest,
-  GetItemWidgetRequest, GetKeywordWidgetRequest, GetPersonalizedWidgetRequest, RecommendationWidgetsResponseV2 } from '@bloomreach/discovery-api-client/src/recommendationWidgetsAPI';
 
 declare const window: any;
 
@@ -61,26 +68,30 @@ export function buildRecommendationsModule(): RecommendationsModule {
       // get and populate widgets data into the DOM
       const loadWidgets = getCurrentRecommendationsUiState().widgets.reduce((allPromises, widgetData) => [
         ...allPromises,
-        new Promise((resolve) => {
+        new Promise((resolve, reject) => {
           // build API call parameters
-          const apiCallParameters = buildApiCallParameters(widgetData.node);
+          try {
+            const apiCallParameters = buildApiCallParameters(widgetData.node);
 
-          // call api and get data
-          let widgetResponse;
-          if (isKeywordWidgetRequest(apiCallParameters)) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            widgetResponse = getKeywordWidget(apiCallParameters);
-          } else if (isCategoryWidgetRequest(apiCallParameters)) {
-            widgetResponse = getCategoryWidget(apiCallParameters);
-          } else if (isItemWidgetRequest(apiCallParameters)) {
-            widgetResponse = getItemWidget(apiCallParameters);
-          } else if (isPersonalizedWidgetRequest(apiCallParameters)) {
-            widgetResponse = getPersonalizedWidget(apiCallParameters);
-          } else {
-            widgetResponse = getGlobalWidget(apiCallParameters as GetGlobalWidgetRequest);
+            // call api and get data
+            let widgetResponse;
+            if (isKeywordWidgetRequest(apiCallParameters)) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+              widgetResponse = getKeywordWidget(apiCallParameters);
+            } else if (isCategoryWidgetRequest(apiCallParameters)) {
+              widgetResponse = getCategoryWidget(apiCallParameters);
+            } else if (isItemWidgetRequest(apiCallParameters)) {
+              widgetResponse = getItemWidget(apiCallParameters);
+            } else if (isPersonalizedWidgetRequest(apiCallParameters)) {
+              widgetResponse = getPersonalizedWidget(apiCallParameters);
+            } else {
+              widgetResponse = getGlobalWidget(apiCallParameters);
+            }
+
+            resolve(widgetResponse);
+          } catch (e) {
+            reject(e);
           }
-
-          resolve(widgetResponse);
 
         }).then((widgetResponse: RecommendationWidgetsResponseV2) => {
 
@@ -127,31 +138,33 @@ export function buildRecommendationsModule(): RecommendationsModule {
   };
 }
 
-function buildApiCallParameters(widgetNode: Node) {
+function buildApiCallParameters(widgetNode: Node): GetWidgetRequest {
   const config = buildRecommendationsConfig();
   const urlParameters = new URLSearchParams(window.location.search as string);
   const currentRecommendationsRequestState = getCurrentRecommendationsRequestState();
 
   const widgetAttributes: DOMStringMap = (widgetNode as HTMLElement).dataset;
 
-  const apiParameters: { [key: string]: any } = {
+  const apiParameters: WidgetRequestType = {
     ...(config?.widget?.endpoint ? { endpoint: config.widget.endpoint } : {}),
+    ...(config?.widget?.fields ? { fields: config.widget.fields } : {}),
+    type: widgetAttributes.type as WidgetTypes,
+    id: widgetAttributes.id ?? '',
     account_id: config.account_id,
     domain_key: config.domain_key,
     request_id: currentRecommendationsRequestState.request_id,
-    _br_uid_2: config.tracking_cookie,
-    ref_url: config.ref_url,
-    url: config.url,
+    _br_uid_2: config.tracking_cookie ?? '',
+    ref_url: config.ref_url ?? '',
+    url: config.url ?? '',
     rows: Number(widgetAttributes.numberOfItemsToFetch) || DEFAULT_PAGE_SIZE,
     start: DEFAULT_START,
-    ...widgetAttributes
   };
 
   // add URL parameters
   // eslint-disable-next-line functional/no-loop-statement
   for (const [key, value] of urlParameters.entries()) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    if (!Object.keys(apiParameters).includes(key as string)) {
+    if (!Object.keys(apiParameters as {}).includes(key as string)) {
       apiParameters[key] = value;
     }
   }
@@ -163,25 +176,20 @@ function buildApiCallParameters(widgetNode: Node) {
     apiParameters.cdp_segments = segmentationData;
   }
 
-  switch (widgetAttributes.type) {
-    case 'keyword':
-      apiParameters.query = widgetAttributes.query;
-      return apiParameters as GetKeywordWidgetRequest;
-    case 'category':
-      apiParameters.cat_id = widgetAttributes.categoryId;
-      return apiParameters as GetCategoryWidgetRequest;
-    case 'item':
-      apiParameters.item_ids = widgetAttributes.itemIds;
-      return apiParameters as GetItemWidgetRequest;
-    case 'personalized':
-      apiParameters.user_id = widgetAttributes.userId;
-      return apiParameters as GetPersonalizedWidgetRequest;
-    case 'global':
-      return apiParameters as GetGlobalWidgetRequest;
-
-    default:
-      return new Error(`Invalid widget type: "${widgetAttributes.type}"`);
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  if (isKeywordWidgetRequest(apiParameters)) {
+    apiParameters.query = widgetAttributes.query ?? '';
+  } else if (isCategoryWidgetRequest(apiParameters)) {
+    apiParameters.cat_id = widgetAttributes.categoryId ?? '';
+  } else if (isItemWidgetRequest(apiParameters)) {
+    apiParameters.item_ids = widgetAttributes.itemIds;
+  } else if (isPersonalizedWidgetRequest(apiParameters)) {
+    apiParameters.user_id = widgetAttributes.userId;
+  } else if (!isGlobalWidgetRequest(apiParameters)) {
+    throw new Error(`Invalid widget type: "${widgetAttributes.type}"`);
   }
+
+  return apiParameters;
 }
 
 export function getCurrentRecommendationsUiState() {
@@ -226,20 +234,24 @@ function storeSegmentationPixelData() {
   }
 }
 
-function isKeywordWidgetRequest(apiCallParameters: any): apiCallParameters is GetKeywordWidgetRequest {
-  return 'query' in apiCallParameters;
+function isKeywordWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetKeywordWidgetRequest {
+  return apiCallParameters.type === 'keyword';
 }
 
-function isCategoryWidgetRequest(apiCallParameters: any): apiCallParameters is GetCategoryWidgetRequest {
-  return 'cat_id' in apiCallParameters;
+function isCategoryWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetCategoryWidgetRequest {
+  return apiCallParameters.type === 'category';
 }
 
-function isItemWidgetRequest(apiCallParameters: any): apiCallParameters is GetItemWidgetRequest {
-  return 'item_ids' in apiCallParameters;
+function isItemWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetItemWidgetRequest {
+  return apiCallParameters.type === 'item';
 }
 
-function isPersonalizedWidgetRequest(apiCallParameters: any): apiCallParameters is GetPersonalizedWidgetRequest {
-  return 'user_id' in apiCallParameters;
+function isPersonalizedWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetPersonalizedWidgetRequest {
+  return apiCallParameters.type === 'personalized';
+}
+
+function isGlobalWidgetRequest(apiCallParameters: WidgetRequestType): apiCallParameters is GetGlobalWidgetRequest {
+  return apiCallParameters.type === 'global';
 }
 
 function logWidgetViewEvent(widgetElement: HTMLElement) {

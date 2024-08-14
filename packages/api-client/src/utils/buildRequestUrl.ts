@@ -45,9 +45,11 @@ export function buildAutosuggestRequestUrl(parameters: GetSuggestionsRequest): s
 }
 
 export function buildRecommendationWidgetsRequestUrl(parameters: GetWidgetRequest): string {
-  const apiParameters = { ...parameters };
-  const endpoint = `${apiParameters?.endpoint || ENDPOINT_WIDGETS_API}${apiParameters.type}/${apiParameters.id}`;
-  if (apiParameters?.endpoint) delete apiParameters?.endpoint;
-  if (!apiParameters?.fields) apiParameters.fields = FIELD_LIST_WIDGETS;
+  const apiParameters = { ...parameters } as Partial<GetWidgetRequest>;
+  const endpoint = `${apiParameters.endpoint || ENDPOINT_WIDGETS_API}${apiParameters.type}/${apiParameters.id}`;
+  if (apiParameters.endpoint) delete apiParameters.endpoint;
+  if (apiParameters.type) delete apiParameters.type;
+  if (apiParameters.id) delete apiParameters.id;
+  if (!apiParameters.fields) apiParameters.fields = FIELD_LIST_WIDGETS;
   return `${endpoint}${buildQueryParameters(apiParameters)}`;
 }
