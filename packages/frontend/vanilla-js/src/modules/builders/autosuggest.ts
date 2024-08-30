@@ -88,7 +88,6 @@ function buildApiCallParameters(query: string) {
   const apiParameters: Partial<GetSuggestionsRequest> = {
     ...(config?.autosuggest?.endpoint ? { endpoint: config.autosuggest.endpoint } : {}),
     q: query || urlParameters.get(config?.default_search_parameter || '') || '',
-    sort: config.autosuggest?.sort,
     account_id: config.account_id,
     domain_key: config.domain_key,
     request_id: currentAutosuggestRequestState.request_id,
