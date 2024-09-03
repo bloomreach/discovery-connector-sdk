@@ -1,7 +1,5 @@
 // autosuggestAPI/types.ts
 
-import type { SortByOptions } from '..';
-
 /**
  * @export
  * @interface GetSuggestionsRequest
@@ -61,11 +59,6 @@ export interface GetSuggestionsRequest {
      * Indicates whether data wrapped in the function for CORS requests
      */
     callback?: string;
-
-    /**
-     * Provides the sort order designation
-     */
-    sort?: SortByOptions;
 }
 
 /**

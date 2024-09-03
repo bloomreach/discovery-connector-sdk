@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.2] - 2024-08-29
+
+### Fixed
+
+Remove the useless `sort` parameter from autosuggest to avoid potential [API issues](https://bloomreach.atlassian.net/browse/PJSALVAGE-17).
+
 ## [3.1.1] - 2024-08-12
 
 ### Fixed
