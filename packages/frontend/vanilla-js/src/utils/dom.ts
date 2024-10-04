@@ -8,8 +8,8 @@ export function findUpElementWithClassName(
 ): Node | null {
     let element: Node | null = startElement;
     // eslint-disable-next-line functional/no-loop-statement
-    while (element && element.parentNode) {
-        element = element.parentNode;
+    while (element && element.parentElement) {
+        element = element.parentElement;
         if (
             element &&
             (element as HTMLElement).classList?.contains(className)
@@ -26,8 +26,8 @@ export function findUpElementByTagName(
 ): Node | null {
     let element: Node | null = startElement;
     // eslint-disable-next-line functional/no-loop-statement
-    while (element && element.parentNode) {
-        element = element.parentNode;
+    while (element && element.parentElement) {
+        element = element.parentElement;
         if (
             element &&
             (element as HTMLElement).tagName.toLowerCase() ===
