@@ -15,7 +15,6 @@ import {
   injectAutosuggestResultsContainer
 } from '../../utils';
 import { mapAutosuggestApiResponse } from '../../mappers';
-import autosuggestTemplate from '../../templates/autosuggest.ejs';
 import { generateRequestId, getSuggestions} from '@bloomreach/discovery-api-client';
 import type { GetSuggestionsRequest } from '@bloomreach/discovery-api-client';
 
@@ -44,9 +43,6 @@ export function buildAutosuggestModule(): AutosuggestModule {
     getCurrentAutosuggestUiState: () => currentAutosuggestUiState,
 
     load: async () => {
-      injectAutosuggestDynamicStyles();
-      injectAutosuggestResultsContainer();
-
       if (!areRequirementsMet()) {
         return;
       }
@@ -69,11 +65,12 @@ export async function suggest(query: string): Promise<void> {
   // @ts-ignore
   const results = await getSuggestions(apiCallParameters);
   const templateData = mapAutosuggestApiResponse(results);
+  const config = buildAutosuggestConfig();
 
   updateCurrentAutosuggestRequestState({ last_template_data: templateData });
 
   getAutosuggestResultsContainerElement().innerHTML = ejs.render(
-    autosuggestTemplate,
+    (config.autosuggest?.template || ''),
     templateData
   );
 
@@ -135,12 +132,24 @@ export function updateCurrentAutosuggestUiState(state: Partial<CurrentAutosugges
 function areRequirementsMet() {
   const config = buildAutosuggestConfig();
 
-  invariant(config.account_id, 'account_id must be set');
-  invariant(config.domain_key, 'domain_key must be set');
+  try {
+    invariant(config.account_id, 'account_id must be set');
+    invariant(config.domain_key, 'domain_key must be set');
 
-  // these check if the elements are in the DOM
-  getAutosuggestSearchInputElement();
-  getAutosuggestResultsContainerElement();
+    // these check if the elements are in the DOM
+    if (!getAutosuggestSearchInputElement()) {
+      throw Error('Search input element not found');
+    }
+    injectAutosuggestDynamicStyles();
+    injectAutosuggestResultsContainer();
+
+    if (!getAutosuggestResultsContainerElement()) {
+      throw Error('Autosuggest results container element cannot be created');
+    }
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 
   return config?.autosuggest?.enabled;
 }

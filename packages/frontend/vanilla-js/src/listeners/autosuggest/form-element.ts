@@ -20,7 +20,7 @@ export function addFormElementSubmitListener() {
     getAutosuggestSearchInputElement(),
     'form'
   ) as HTMLFormElement);
-  if (!element.getAttribute('hasListener')) {
+  if (element && !element.getAttribute('hasListener')) {
     element.addEventListener(
       'submit',
       buildFormElementSubmitListener()

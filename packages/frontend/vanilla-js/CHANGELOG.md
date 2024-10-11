@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.3] - 2024-10-08
+
+### Fixed
+
+Autosuggest always uses the default template.
+
 ## [3.1.2] - 2024-08-29
 
 ### Fixed

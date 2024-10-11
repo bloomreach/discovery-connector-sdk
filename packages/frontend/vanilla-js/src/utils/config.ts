@@ -75,7 +75,7 @@ export function buildAutosuggestConfig() {
       selector: SELECTOR_AUTOSUGGEST_INPUT,
       template: autosuggestTemplate,
       catalog_views: '',
-      ...baseConfig.autosuggest
+      ...(baseConfig?.autosuggest ?? {})
     }
   };
 
@@ -148,7 +148,7 @@ export function buildRecommendationsConfig() {
       endpoint: '',
       fields: '',
       template: recommendationWidgetTemplate,
-      ...baseConfig.widget
+      ...(baseConfig?.widget ?? {})
     }
   };
 

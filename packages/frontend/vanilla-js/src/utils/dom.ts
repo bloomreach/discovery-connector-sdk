@@ -8,8 +8,8 @@ export function findUpElementWithClassName(
 ): Node | null {
     let element: Node | null = startElement;
     // eslint-disable-next-line functional/no-loop-statement
-    while (element && element.parentNode) {
-        element = element.parentNode;
+    while (element && element.parentElement) {
+        element = element.parentElement;
         if (
             element &&
             (element as HTMLElement).classList?.contains(className)
@@ -17,6 +17,7 @@ export function findUpElementWithClassName(
             return element;
         }
     }
+    console.warn(`CSS class '${className}' not found in ancestors of ${startElement.nodeName}`);
     return null;
 }
 
@@ -26,8 +27,8 @@ export function findUpElementByTagName(
 ): Node | null {
     let element: Node | null = startElement;
     // eslint-disable-next-line functional/no-loop-statement
-    while (element && element.parentNode) {
-        element = element.parentNode;
+    while (element && element.parentElement) {
+        element = element.parentElement;
         if (
             element &&
             (element as HTMLElement).tagName.toLowerCase() ===
@@ -36,6 +37,7 @@ export function findUpElementByTagName(
             return element;
         }
     }
+    console.warn(`'${tagName}' not found in ancestors of ${startElement.nodeName}`);
     return null;
 }
 
