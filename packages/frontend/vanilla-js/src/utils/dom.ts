@@ -17,6 +17,7 @@ export function findUpElementWithClassName(
             return element;
         }
     }
+    console.warn(`CSS class '${className}' not found in ancestors of ${startElement.nodeName}`);
     return null;
 }
 
@@ -36,6 +37,7 @@ export function findUpElementByTagName(
             return element;
         }
     }
+    console.warn(`'${tagName}' not found in ancestors of ${startElement.nodeName}`);
     return null;
 }
 
