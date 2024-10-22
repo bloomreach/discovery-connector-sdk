@@ -156,3 +156,18 @@ export function getSelectedColors(): string[] {
     []
   );
 }
+
+export function formatAdditionalParams(additionalParams?: string | null): Record<string, any> {
+  return additionalParams?.replaceAll('&quot;', '"')
+    .split(/&(?!#\d+;|#x[\da-fA-F]+;|[a-zA-Z]+;)/) // matches standalone '&', but excludes those that are part of HTML entities
+    .reduce<Record<string, any>>((accu, curr) => {
+      const index = curr.indexOf('=');
+      if (index > 0) {
+        const key = curr.slice(0, index);
+        const value = curr.slice(index + 1);
+        accu[key] = value;
+      }
+
+      return accu;
+    }, {}) ?? {};
+}

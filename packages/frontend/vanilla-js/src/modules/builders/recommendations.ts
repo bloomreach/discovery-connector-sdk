@@ -5,7 +5,7 @@ import type {
   RecommendationsTemplateData,
 } from '../../types';
 import * as listeners from '../../listeners/recommendations';
-import { buildRecommendationsConfig, extractSegmentationCookie, isMobileView, isTabletView } from '../../utils';
+import { buildRecommendationsConfig, extractSegmentationCookie, formatAdditionalParams, isMobileView, isTabletView } from '../../utils';
 import {
   COOKIE_NAME_SEGMENTATION_CUSTOMER_PROFILE,
   DEFAULT_PAGE_SIZE,
@@ -143,21 +143,31 @@ function buildApiCallParameters(widgetNode: Node): GetWidgetRequest {
   const urlParameters = new URLSearchParams(window.location.search as string);
   const currentRecommendationsRequestState = getCurrentRecommendationsRequestState();
 
-  const widgetAttributes: DOMStringMap = (widgetNode as HTMLElement).dataset;
+  const {
+    id,
+    type,
+    categoryId,
+    query,
+    itemIds,
+    userId,
+    numberOfItemsToFetch,
+    additionalParams,
+  }: DOMStringMap = (widgetNode as HTMLElement).dataset;
 
   const apiParameters: WidgetRequestType = {
     ...(config?.widget?.endpoint ? { endpoint: config.widget.endpoint } : {}),
     ...(config?.widget?.fields ? { fields: config.widget.fields } : {}),
-    type: widgetAttributes.type as WidgetTypes,
-    id: widgetAttributes.id ?? '',
+    type: type as WidgetTypes,
+    id: id ?? '',
     account_id: config.account_id,
     domain_key: config.domain_key,
     request_id: currentRecommendationsRequestState.request_id,
     _br_uid_2: config.tracking_cookie ?? '',
     ref_url: config.ref_url ?? '',
     url: config.url ?? '',
-    rows: Number(widgetAttributes.numberOfItemsToFetch) || DEFAULT_PAGE_SIZE,
+    rows: Number(numberOfItemsToFetch) || DEFAULT_PAGE_SIZE,
     start: DEFAULT_START,
+    ...formatAdditionalParams(additionalParams)
   };
 
   // add URL parameters
@@ -178,15 +188,15 @@ function buildApiCallParameters(widgetNode: Node): GetWidgetRequest {
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   if (isKeywordWidgetRequest(apiParameters)) {
-    apiParameters.query = widgetAttributes.query ?? '';
+    apiParameters.query = query ?? '';
   } else if (isCategoryWidgetRequest(apiParameters)) {
-    apiParameters.cat_id = widgetAttributes.categoryId ?? '';
+    apiParameters.cat_id = categoryId ?? '';
   } else if (isItemWidgetRequest(apiParameters)) {
-    apiParameters.item_ids = widgetAttributes.itemIds;
+    apiParameters.item_ids = itemIds;
   } else if (isPersonalizedWidgetRequest(apiParameters)) {
-    apiParameters.user_id = widgetAttributes.userId;
+    apiParameters.user_id = userId;
   } else if (!isGlobalWidgetRequest(apiParameters)) {
-    throw new Error(`Invalid widget type: "${widgetAttributes.type}"`);
+    throw new Error(`Invalid widget type: "${type}"`);
   }
 
   return apiParameters;

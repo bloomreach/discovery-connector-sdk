@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.4] - 2024-10-08
+
+### Changed
+
+Support additional parameters for Recommendations widgets.
+
 ## [3.1.3] - 2024-10-08
 
 ### Fixed

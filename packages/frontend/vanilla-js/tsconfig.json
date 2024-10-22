@@ -10,7 +10,7 @@
     ],
 
     /* Basic Options */
-    "target": "ES2017",
+    "target": "ES2022",
     "module": "esnext" ,
     "moduleResolution": "node",
     "allowJs": false,
