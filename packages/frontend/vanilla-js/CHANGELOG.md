@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 - Rewritten pixel events listeners using custom events, to support Shopify webpixels implementation.
 - Default pixel events handlers are now packaged separately, so Shopify connectors can implement its own pixel events handlers.
 
+## Fixed
+
+Infinite scroll paging issues (https://bloomreach.atlassian.net/browse/DCONN-79).
+
 ## [3.1.4] - 2024-10-08
 
 ### Changed
