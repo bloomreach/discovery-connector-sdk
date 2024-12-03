@@ -2,7 +2,6 @@ import { PARAMETER_NAME_PAGE } from '../../constants';
 import { initiateSearch } from '../../modules/builders';
 import type { SearchModuleConfig } from '../../types';
 import {
-  buildSearchConfig,
   decrementParameterInUrl,
   getSearchResultsContainerElement,
   incrementParameterInUrl
@@ -11,8 +10,12 @@ import {
 declare const window: any;
 // @ts-ignore
 function buildIntersectionListener(config: SearchModuleConfig): IntersectionObserverCallback {
-  return (entries) => {
-    if (entries[0].intersectionRatio <= 0) {
+  return (entries: IntersectionObserverEntry[]) => {
+    if (!entries[0]?.isIntersecting) {
+      return;
+    }
+
+    if (!entries[0].target.querySelector('.blm-scroll-indicator__loading')) {
       return;
     }
 
@@ -21,7 +24,7 @@ function buildIntersectionListener(config: SearchModuleConfig): IntersectionObse
     connectorConfigObject.start = currentStart + config.search.items_per_page;
     incrementParameterInUrl(PARAMETER_NAME_PAGE);
 
-    initiateSearch().catch(error => {
+    initiateSearch(config).catch(error => {
       connectorConfigObject.start = currentStart;
       decrementParameterInUrl(PARAMETER_NAME_PAGE);
       console.error(error);
@@ -29,14 +32,12 @@ function buildIntersectionListener(config: SearchModuleConfig): IntersectionObse
   };
 }
 
-export function addScrollListener() {
-  const config = buildSearchConfig();
-
+export function addScrollListener(config: SearchModuleConfig) {
   if (
     config.search?.infinite_scroll &&
     !document.querySelector('.blm-scroll-indicator')
   ) {
-    const searchResultsContainerElement = getSearchResultsContainerElement();
+    const searchResultsContainerElement = getSearchResultsContainerElement(config);
     const indicatorElement = document.createElement('div');
     indicatorElement.classList.add('blm-scroll-indicator');
     const loaderElement = document.createElement('div');

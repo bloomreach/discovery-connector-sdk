@@ -14,6 +14,7 @@ import {
   findUpElementWithClassName
 } from '../../utils';
 import autosuggestTemplate from '../../templates/autosuggest.ejs';
+import type { AutosuggestModuleConfig } from '../../types';
 
 function buildSearchInputElementBlurListener() {
   return () => {
@@ -53,14 +54,13 @@ function buildSearchInputElementFocusListener() {
   };
 }
 
-function buildSearchInputElementKeyupListener() {
+function buildSearchInputElementKeyupListener(searchInputElement: HTMLElement, config: AutosuggestModuleConfig) {
   return (event: KeyboardEvent) => {
     const query = (event.target as HTMLInputElement).value;
-    const searchInputElement = getAutosuggestSearchInputElement();
 
     if (query.length >= AUTOSUGGEST_MINIMUM_QUERY_LENGTH) {
       searchInputElement.dataset.originalQuery = query;
-      suggest(query).catch(console.error);
+      suggest(query, config).catch(console.error);
     } else {
       getAutosuggestResultsContainerElement().innerHTML = '';
       searchInputElement.dataset.originalQuery = '';
@@ -69,13 +69,12 @@ function buildSearchInputElementKeyupListener() {
   };
 }
 
-function addSearchInputElementBlurListener() {
+function addSearchInputElementBlurListener(element: HTMLElement) {
   if (!document.body.getAttribute('hasMousedownListener')) {
     document.body.addEventListener('mousedown', buildGeneralClickListenerForSearchInputBlur());
     document.body.setAttribute('hasMousedownListener', 'true');
   }
 
-  const element = getAutosuggestSearchInputElement();
   if (!element.getAttribute('hasBlurListener')) {
     element.addEventListener(
       'blur',
@@ -85,8 +84,7 @@ function addSearchInputElementBlurListener() {
   }
 }
 
-function addSearchInputElementFocusListener() {
-  const element = getAutosuggestSearchInputElement();
+function addSearchInputElementFocusListener(element: HTMLElement) {
   if (!element.getAttribute('hasFocusListener')) {
     element.addEventListener(
       'focus',
@@ -96,21 +94,21 @@ function addSearchInputElementFocusListener() {
   }
 }
 
-function addSearchInputElementKeyupListener() {
-  const element = getAutosuggestSearchInputElement();
+function addSearchInputElementKeyupListener(element: HTMLElement, config: AutosuggestModuleConfig) {
   if (!element.getAttribute('hasKeyupListener')) {
 
     element.addEventListener(
       'keyup',
       // @ts-ignore
-      debounce(buildSearchInputElementKeyupListener(), 500) as EventListener
+      debounce(buildSearchInputElementKeyupListener(element, config), 500) as EventListener
     );
     element.setAttribute('hasKeyupListener', 'true');
   }
 }
 
-export function addSearchInputElementListeners() {
-  addSearchInputElementBlurListener();
-  addSearchInputElementFocusListener();
-  addSearchInputElementKeyupListener();
+export function addSearchInputElementListeners(config: AutosuggestModuleConfig) {
+  const element = getAutosuggestSearchInputElement(config);
+  addSearchInputElementBlurListener(element);
+  addSearchInputElementFocusListener(element);
+  addSearchInputElementKeyupListener(element, config);
 }

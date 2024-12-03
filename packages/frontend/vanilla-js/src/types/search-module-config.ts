@@ -11,5 +11,6 @@ export interface SearchModuleConfig extends WithRequiredProp<ConnectorConfig, 's
   search: ConnectorConfig['search'] & {
     category_id?: string;
     is_category_page?: boolean;
+    test_query?: string;
   }
 }

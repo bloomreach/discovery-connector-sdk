@@ -1,7 +1,6 @@
-import { buildSearchConfig } from '../../utils';
+import type { SearchModuleConfig } from '../../types';
 
-function buildLoadMoreFacetValuesButtonClickListener() {
-  const config = buildSearchConfig();
+function buildLoadMoreFacetValuesButtonClickListener(config: SearchModuleConfig) {
   const numberOfDisplayedFacetValues = Number(config.search?.initial_number_of_facet_values);
   let showFilterItems = numberOfDisplayedFacetValues;
   const incrementFilterBy = numberOfDisplayedFacetValues;
@@ -29,12 +28,12 @@ function buildLoadMoreFacetValuesButtonClickListener() {
   };
 }
 
-export function addLoadMoreFacetValuesButtonClickListener() {
+export function addLoadMoreFacetValuesButtonClickListener(config: SearchModuleConfig) {
   document
     .querySelectorAll('.blm-product-search-load-more')
     .forEach(item => {
       if (!item.getAttribute('hasListener')) {
-        item.addEventListener('click', buildLoadMoreFacetValuesButtonClickListener());
+        item.addEventListener('click', buildLoadMoreFacetValuesButtonClickListener(config));
         item.setAttribute('hasListener', 'true');
       }
     });

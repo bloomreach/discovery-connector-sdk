@@ -1,12 +1,11 @@
-import { RecommendationWidgetsResponseV2 } from '@bloomreach/discovery-api-client/src/recommendationWidgetsAPI';
-import type { RecommendationsTemplateData } from '../types';
-import { buildRecommendationsConfig } from '../utils';
+import type { RecommendationWidgetsResponseV2 } from '@bloomreach/discovery-api-client/src/recommendationWidgetsAPI';
+import type { RecommendationsModuleConfig, RecommendationsTemplateData } from '../types';
 
 export function mapRecommendationsApiResponse(
-  responseData: RecommendationWidgetsResponseV2
+  responseData: RecommendationWidgetsResponseV2,
+  config: RecommendationsModuleConfig
 ): RecommendationsTemplateData {
 
-  const config = buildRecommendationsConfig();
   return {
     config,
     products: [

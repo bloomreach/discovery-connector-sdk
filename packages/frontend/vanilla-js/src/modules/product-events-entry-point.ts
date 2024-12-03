@@ -6,7 +6,7 @@ const productEventsModule = buildProductEventsModule();
 
 window.BloomreachModules = {
   ...globalBloomreachModules,
-  events: productEventsModule,
+  productEvents: productEventsModule,
 };
 
-productEventsModule.load().catch(console.error);
+// pproductsEventsModule.load().catch(console.error);

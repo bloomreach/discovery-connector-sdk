@@ -5,6 +5,7 @@ export * from './autosuggest-template-data';
 export * from './connector-config';
 export * from './current-request-state';
 export * from './current-ui-state';
+export * from './pixel-events';
 export * from './product-events';
 export * from './recommendations';
 export * from './recommendations-module-config';

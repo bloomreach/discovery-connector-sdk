@@ -28,7 +28,7 @@ import type {
   AutosuggestModuleConfig,
   ConnectorConfig,
   RecommendationsModuleConfig,
-  SearchModuleConfig
+  SearchModuleConfig,
 } from '../types';
 
 import searchLayoutTemplate from '../templates/search-layout.ejs';
@@ -118,9 +118,9 @@ export function buildSearchConfig() {
     }
   };
 
-  config.search?.sorting_options?.sort?.(
-    (option1, option2) => (option1.value > option2.value ? 1 : -1)
-  );
+  // config.search?.sorting_options?.sort?.(
+  //   (option1, option2) => (option1.value > option2.value ? 1 : -1)
+  // );
 
   if (config.search) {
     config.search = {
@@ -139,8 +139,9 @@ export function buildSearchConfig() {
   return config;
 }
 
-export function buildRecommendationsConfig() {
+export function buildRecommendationsConfig(widgetNode: Node) {
   const baseConfig = buildBaseConfig();
+  const { endpoint, fields }: DOMStringMap = (widgetNode as HTMLElement).dataset;
 
   const config: RecommendationsModuleConfig = {
     ...baseConfig,
@@ -148,7 +149,9 @@ export function buildRecommendationsConfig() {
       endpoint: '',
       fields: '',
       template: recommendationWidgetTemplate,
-      ...(baseConfig?.widget ?? {})
+      ...(baseConfig?.widget ?? {}),
+      ...(endpoint ? { endpoint } : {}),
+      ...(fields ? { fields } : {}),
     }
   };
 

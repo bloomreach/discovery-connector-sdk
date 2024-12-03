@@ -1,8 +1,9 @@
 import { PARAMETER_NAME_FACETS, PARAMETER_NAME_PAGE } from '../../constants';
 import { initiateSearch, getCurrentSearchRequestState } from '../../modules/builders';
-import { resetLoadingIndicator, updateMultipleInstanceParametersInUrl, getCheckedFacetValues, buildPriceUrlParameterObject, updateParameterInUrl, buildSearchConfig } from '../../utils';
+import type { SearchModuleConfig } from '../../types';
+import { resetLoadingIndicator, updateMultipleInstanceParametersInUrl, getCheckedFacetValues, buildPriceUrlParameterObject, updateParameterInUrl } from '../../utils';
 
-function buildPriceRangeChangeListener() {
+function buildPriceRangeChangeListener(config: SearchModuleConfig) {
   return () => {
     resetLoadingIndicator();
 
@@ -14,12 +15,11 @@ function buildPriceRangeChangeListener() {
       }
     );
     updateParameterInUrl(PARAMETER_NAME_PAGE, '1');
-    initiateSearch({ toReplace: true }).catch(console.error);
+    initiateSearch(config, { toReplace: true }).catch(console.error);
   };
 }
 
-function buildPriceRangeInputListener(querySelector: string) {
-  const config = buildSearchConfig();
+function buildPriceRangeInputListener(querySelector: string, config: SearchModuleConfig) {
   return (event: Event) => {
     const sliderValue = document.querySelector(querySelector);
     if (sliderValue) {
@@ -28,7 +28,7 @@ function buildPriceRangeInputListener(querySelector: string) {
   };
 }
 
-export function addPriceRangeChangeListeners() {
+export function addPriceRangeChangeListeners(config: SearchModuleConfig) {
   const currentSearchRequestState = getCurrentSearchRequestState();
 
   const priceRangeLowerBoundaryInput = document.querySelector(
@@ -40,13 +40,13 @@ export function addPriceRangeChangeListeners() {
 
   if (priceRangeLowerBoundaryInput && priceRangeUpperBoundaryInput) {
     if (!priceRangeLowerBoundaryInput.getAttribute('hasListener')) {
-      priceRangeLowerBoundaryInput.addEventListener('change', buildPriceRangeChangeListener());
-      priceRangeLowerBoundaryInput.addEventListener('input', buildPriceRangeInputListener('.blm-range-slider__values--min'));
+      priceRangeLowerBoundaryInput.addEventListener('change', buildPriceRangeChangeListener(config));
+      priceRangeLowerBoundaryInput.addEventListener('input', buildPriceRangeInputListener('.blm-range-slider__values--min', config));
       priceRangeLowerBoundaryInput.setAttribute('hasListener', 'true');
     }
     if (!priceRangeUpperBoundaryInput.getAttribute('hasListener')) {
-      priceRangeUpperBoundaryInput.addEventListener('change', buildPriceRangeChangeListener());
-      priceRangeUpperBoundaryInput.addEventListener('input', buildPriceRangeInputListener('.blm-range-slider__values--max'));
+      priceRangeUpperBoundaryInput.addEventListener('change', buildPriceRangeChangeListener(config));
+      priceRangeUpperBoundaryInput.addEventListener('input', buildPriceRangeInputListener('.blm-range-slider__values--max', config));
       priceRangeUpperBoundaryInput.setAttribute('hasListener', 'true');
     }
   }

@@ -1,8 +1,9 @@
 import { PARAMETER_NAME_PAGE } from '../../constants';
 import { initiateSearch, getCurrentSearchRequestState } from '../../modules/builders';
+import type { SearchModuleConfig } from '../../types';
 import { decrementParameterInUrl, incrementParameterInUrl, resetLoadingIndicator, updateParameterInUrl } from '../../utils';
 
-function buildPaginationContainerClickListener() {
+function buildPaginationContainerClickListener(config: SearchModuleConfig) {
   return (event: Event) => {
     resetLoadingIndicator();
     const clickedPaginationValue = (event.target as HTMLButtonElement)
@@ -22,12 +23,12 @@ function buildPaginationContainerClickListener() {
             clickedPaginationValue
           );
       }
-      initiateSearch({ toReplace: true }).catch(console.error);
+      initiateSearch(config, { toReplace: true }).catch(console.error);
     }
   };
 }
 
-export function addPaginationContainerClickListener() {
+export function addPaginationContainerClickListener(config: SearchModuleConfig) {
   const currentSearchRequestState = getCurrentSearchRequestState();
 
   // Listen to pagination events
@@ -36,7 +37,7 @@ export function addPaginationContainerClickListener() {
   );
   if (paginationContainer) {
     if (!paginationContainer.getAttribute('hasListener')) {
-      paginationContainer.addEventListener('click', buildPaginationContainerClickListener());
+      paginationContainer.addEventListener('click', buildPaginationContainerClickListener(config));
       paginationContainer.setAttribute('hasListener', 'true');
     }
   }

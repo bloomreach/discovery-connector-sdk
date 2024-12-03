@@ -1,8 +1,9 @@
 import { PARAMETER_NAME_FACETS, PARAMETER_NAME_PAGE } from '../../constants';
 import { initiateSearch, updateCurrentSearchRequestState } from '../../modules/builders';
+import type { SearchModuleConfig } from '../../types';
 import { resetLoadingIndicator, updateMultipleInstanceParametersInUrl, getCheckedFacetValues, buildPriceUrlParameterObject, updateParameterInUrl } from '../../utils';
 
-function buildFacetCheckboxChangeListener() {
+function buildFacetCheckboxChangeListener(config: SearchModuleConfig) {
   return () => {
     resetLoadingIndicator();
 
@@ -30,18 +31,18 @@ function buildFacetCheckboxChangeListener() {
       price_range_min_value: 0,
       price_range_max_value: 0,
     });
-    initiateSearch({ toReplace: true }).catch(console.error);
+    initiateSearch(config, { toReplace: true }).catch(console.error);
   };
 }
 
-export function addFacetCheckboxChangeListener() {
+export function addFacetCheckboxChangeListener(config: SearchModuleConfig) {
   const facetCheckboxes = document.querySelectorAll(
     '.blm-product-search-filter-item__checkbox'
   );
   if (facetCheckboxes) {
     facetCheckboxes.forEach((checkbox) => {
       if (!checkbox.getAttribute('hasListener')) {
-        checkbox.addEventListener('change', buildFacetCheckboxChangeListener());
+        checkbox.addEventListener('change', buildFacetCheckboxChangeListener(config));
         checkbox.setAttribute('hasListener', 'true');
       }
     });

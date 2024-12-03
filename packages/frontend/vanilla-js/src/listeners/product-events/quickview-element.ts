@@ -1,6 +1,4 @@
 
-declare const window: any;
-
 function buildQuickviewElementClickListener(quickviewElement: HTMLElement) {
   const {
     blmQuickviewSku,
@@ -9,11 +7,14 @@ function buildQuickviewElementClickListener(quickviewElement: HTMLElement) {
   } = quickviewElement.dataset;
 
   return () => {
-    (window.BrTrk || {})?.getTracker()?.logEvent('product', 'quickview', {
-      prod_id: blmQuickviewProdId,
-      prod_name: blmQuickviewProdName,
-      sku: blmQuickviewSku
-    });
+    quickviewElement.dispatchEvent(new CustomEvent('brProductQuickview', {
+      bubbles: true,
+      detail: {
+        prod_id: blmQuickviewProdId,
+        prod_name: blmQuickviewProdName,
+        sku: blmQuickviewSku,
+      }
+    }));
   };
 }
 
