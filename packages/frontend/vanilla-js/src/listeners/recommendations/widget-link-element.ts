@@ -1,9 +1,7 @@
 import { getCurrentRecommendationsUiState } from '../../modules/builders';
 import { findUpElementWithClassName } from '../../utils';
 
-declare const window: any;
-
-function buildWidgetLinkElementClickListener(parameters: {
+function buildWidgetLinkElementClickListener(widgetElement: HTMLElement, parameters: {
   widgetRid: string,
   widgetId: string,
   widgetType: string,
@@ -19,11 +17,14 @@ function buildWidgetLinkElementClickListener(parameters: {
       ...(parameters.query
         ? {wq: parameters.query}
         : {})
-    }
+    };
 
-    ;(window.BrTrk || {})
-      ?.getTracker()
-      ?.logEvent('widget', 'widget-click', widgetClickEventData, true);
+    widgetElement.dispatchEvent(new CustomEvent('brWidgetClick', {
+      bubbles: true,
+      detail: {
+        ...widgetClickEventData,
+      }
+    }));
   };
 }
 
@@ -52,7 +53,7 @@ export function addWidgetLinkElementClickListener() {
         if (!linkElement.getAttribute('hasListener')) {
           linkElement.addEventListener(
             'click',
-            buildWidgetLinkElementClickListener({
+            buildWidgetLinkElementClickListener(linkElement, {
               widgetRid,
               widgetId,
               widgetType,

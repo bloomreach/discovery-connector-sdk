@@ -4,6 +4,7 @@ export interface ConnectorConfig {
   account_id: number;
   domain_key: string;
   auth_key: string;
+  view_id?: string;
   tracking_cookie?: string;
   ref_url?: string;
   url?: string;
@@ -30,6 +31,7 @@ export interface ConnectorConfig {
     groupby?: string;
     group_limit?: number;
     force_v3_facets?: boolean;
+    additional_parameters?: string;
   };
   autosuggest?: {
     enabled: boolean;
@@ -41,6 +43,7 @@ export interface ConnectorConfig {
     template?: string;
     catalog_views?: string;
     sort?: SortByOptions;
+    additional_parameters?: string;
   };
   category?: {
     enabled: boolean;
@@ -62,10 +65,12 @@ export interface ConnectorConfig {
     groupby?: string;
     group_limit?: number;
     force_v3_facets?: boolean;
+    additional_parameters?: string;
   };
   widget?: {
     endpoint?: string;
     fields?: string;
     template?: string;
+    additional_parameters?: string;
   }
 }

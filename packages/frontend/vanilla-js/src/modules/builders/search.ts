@@ -3,7 +3,8 @@ import type {
   ProductSearchModule,
   CurrentSearchRequestState,
   SearchTemplateData,
-  Facet
+  Facet,
+  SearchModuleConfig
 } from '../../types';
 import {
   PARAMETER_NAME_SIZE,
@@ -13,7 +14,7 @@ import {
   MAX_COLOR_SWATCHES,
 } from '../../constants';
 
-import * as listeners from '../../listeners';
+import * as listeners from '../../listeners/search';
 import {
   resetFacetGroups,
   getSearchResultsContainerElement,
@@ -29,7 +30,8 @@ import {
   decrementParameterInUrl,
   buildSearchConfig,
   applyKeywordRedirection,
-  buildPaginationData
+  buildPaginationData,
+  formatAdditionalParams
 } from '../../utils';
 import { mapSearchApiResponse } from '../../mappers';
 import * as ejs from 'ejs';
@@ -60,7 +62,9 @@ export function buildProductSearchModule({ isCategoryPage } = { isCategoryPage: 
         updateCurrentSearchRequestState({ category_to_load: categoryToLoad });
       }
 
-      if (!areRequirementsMet()) {
+      const config = buildSearchConfig();
+
+      if (!areRequirementsMet(config)) {
         return;
       }
 
@@ -70,29 +74,27 @@ export function buildProductSearchModule({ isCategoryPage } = { isCategoryPage: 
       // so it needs to be here before the first actual API call
       afterElementsLoaded(() => {
         // Add a class to show that the module's content has loaded
-        getSearchResultsContainerElement().classList.add(
+        getSearchResultsContainerElement(config).classList.add(
           'blm-has-loaded'
         );
 
         setupSavingScrollPosition();
 
         // if infinite scroll is on then add intersection observer
-        listeners.addScrollListener();
+        listeners.addScrollListener(config);
 
-        addChangeListeners();
-      });
+        addChangeListeners(config);
+      }, config);
 
       // initiate search with config values and URL parameters
-      await initiateSearch();
+      await initiateSearch(config);
 
       restoreScrollPosition();
     },
   };
 }
 
-function areRequirementsMet() {
-  const config = buildSearchConfig();
-
+function areRequirementsMet(config: SearchModuleConfig) {
   invariant(config.account_id, 'account_id must be set');
   invariant(config.domain_key, 'domain_key must be set');
   invariant(
@@ -105,11 +107,11 @@ function areRequirementsMet() {
   );
 
   // this checks if the element is in the DOM
-  getSearchResultsContainerElement();
+  getSearchResultsContainerElement(config);
 
   const urlParameters = new URLSearchParams(window.location.search as string);
   const searchPageHasQueryToLoad = config.search.is_search_page &&
-    urlParameters.has(config.default_search_parameter);
+    (urlParameters.has(config.default_search_parameter) || config.search.test_query);
   const categoryPageHasCategoryToLoad = config.search.is_category_page &&
     (urlParameters.has(config.default_search_parameter) || config.search.category_id);
 
@@ -124,14 +126,12 @@ function storeSegmentationPixelData() {
   }
 }
 
-export async function initiateSearch(options = { toReplace: false }) {
+export async function initiateSearch(config: SearchModuleConfig, options = { toReplace: false }) {
   updateCurrentSearchRequestState({
     request_id: generateRequestId(),
   });
 
-  const config = buildSearchConfig();
-
-  const apiCallParameters = buildApiCallParameters();
+  const apiCallParameters = buildApiCallParameters(config);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   // @ts-ignore
@@ -143,7 +143,7 @@ export async function initiateSearch(options = { toReplace: false }) {
   }
 
   // builds template data
-  const templateData = buildTemplateData(response);
+  const templateData = buildTemplateData(response, config);
 
   // takes care of scroll loader
   const scrollLoader = document.querySelector(
@@ -162,7 +162,7 @@ export async function initiateSearch(options = { toReplace: false }) {
 
   if (currentSearchRequestState.is_first_request || !config.search.infinite_scroll || options.toReplace) {
 
-    getSearchResultsContainerElement().innerHTML = ejs.render(
+    getSearchResultsContainerElement(config).innerHTML = ejs.render(
       (config.search?.template || '')
         .replace(
           '%%-PRODUCT_LIST_TEMPLATE-%%',
@@ -202,7 +202,7 @@ export function updateCurrentSearchRequestState(state: Partial<CurrentSearchRequ
   });
 }
 
-function afterElementsLoaded(afterLoadCallback: () => void) {
+function afterElementsLoaded(afterLoadCallback: () => void, config: SearchModuleConfig) {
   const mutationObserverConfig = { childList: true, subtree: true };
   const mutationObserverCallback = (mutationsList: MutationRecord[]) => {
     const productListAdded = mutationsList.find(
@@ -223,45 +223,44 @@ function afterElementsLoaded(afterLoadCallback: () => void) {
 
   const observer = new MutationObserver(mutationObserverCallback);
   observer.observe(
-    getSearchResultsContainerElement(),
+    getSearchResultsContainerElement(config),
     mutationObserverConfig
   );
 }
 
-function addChangeListeners() {
+function addChangeListeners(config: SearchModuleConfig) {
   // When we're going back in history, we want to initiate
   // the search again according to the current URL state
   window.onpopstate = async () => {
-    await initiateSearch({ toReplace: true });
+    await initiateSearch(config, { toReplace: true });
   };
 
-  listeners.addPriceRangeChangeListeners();
-  listeners.addClearPriceRangeValueButtonClickListener();
+  listeners.addPriceRangeChangeListeners(config);
+  listeners.addClearPriceRangeValueButtonClickListener(config);
   listeners.addClearSelectedFacetButtonClickListener();
-  listeners.addClearAllSelectedFacetsButtonClickListener();
+  listeners.addClearAllSelectedFacetsButtonClickListener(config);
 
   if (document.querySelector('.blm-product-search-sidebar')) {
     listeners.addSidebarControlButtonClickListener();
-    listeners.addFacetCheckboxChangeListener();
-    listeners.addLoadMoreFacetGroupsButtonClickListener();
-    listeners.addLoadMoreFacetValuesButtonClickListener();
-    listeners.addFacetSearchInputChangeListener();
+    listeners.addFacetCheckboxChangeListener(config);
+    listeners.addLoadMoreFacetGroupsButtonClickListener(config);
+    listeners.addLoadMoreFacetValuesButtonClickListener(config);
+    listeners.addFacetSearchInputChangeListener(config);
 
     // Show the initial number of facets on load
-    resetFacetGroups();
+    resetFacetGroups(config);
   }
 
-  listeners.addPageSizeSelectChangeListener();
-  listeners.addSortSelectChangeListener();
-  listeners.addGroupbySelectChangeListener();
-  listeners.addPaginationContainerClickListener();
+  listeners.addPageSizeSelectChangeListener(config);
+  listeners.addSortSelectChangeListener(config);
+  listeners.addGroupbySelectChangeListener(config);
+  listeners.addPaginationContainerClickListener(config);
   listeners.addSwatchElementHoverListener();
 }
 
-function buildTemplateData(response: SearchResponse): SearchTemplateData {
-  const config = buildSearchConfig();
+function buildTemplateData(response: SearchResponse, config: SearchModuleConfig): SearchTemplateData {
   // map values from API response
-  const templateData = mapSearchApiResponse(response);
+  const templateData = mapSearchApiResponse(response, config);
 
   // add stored keyword redirection info
   const storedKeywordRedirect = JSON.parse(
@@ -355,8 +354,7 @@ function buildTemplateData(response: SearchResponse): SearchTemplateData {
   return templateData;
 }
 
-function buildApiCallParameters() {
-  const config = buildSearchConfig();
+function buildApiCallParameters(config: SearchModuleConfig) {
   const urlParameters = new URLSearchParams(window.location.search as string);
   const currentSearchRequestState = getCurrentSearchRequestState();
   const apiParameters: Partial<GetSearchResultsRequest> = {
@@ -364,10 +362,11 @@ function buildApiCallParameters() {
     ...(config.search?.groupby ? { groupby: config.search.groupby } : {}),
     ...(config.search?.group_limit ? { group_limit: config.search.group_limit } : {}),
     q: urlParameters.get(config.default_search_parameter || '') ||
+      config.search.test_query ||
       config.search.category_id ||
       '',
     rows: config.search?.items_per_page,
-    sort: config?.sort,
+    sort: config.sort,
     start: config.start,
     account_id: config.account_id,
     domain_key: config.domain_key,
@@ -380,6 +379,8 @@ function buildApiCallParameters() {
     fl: config.search?.fields,
     'facet.range': config['facet.range'],
     'stats.field': config['stats.field'],
+    ...(config.view_id ? { view_id: config.view_id } : {}),
+    ...(formatAdditionalParams(config.search.additional_parameters)),
   };
 
   const pageUrlParameter = urlParameters.get(PARAMETER_NAME_PAGE);

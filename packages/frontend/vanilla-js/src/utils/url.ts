@@ -88,7 +88,7 @@ export function decrementParameterInUrl(parameterName: string): void {
   updateParameterInUrl(parameterName, (oldValue) => {
       if (!oldValue) return '1';
       let newValue = Number.parseInt(oldValue, 10);
-      return (--newValue).toString();
+      return Math.max(1, --newValue).toString();
   });
 }
 

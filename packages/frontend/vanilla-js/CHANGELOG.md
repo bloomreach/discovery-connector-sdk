@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0] - 2024-12-03
+
+### Changed
+
+- Support view_id for recommendations and search APIs.
+- Support additional parameters for search and autosuggest APIs.
+- Refactored code to avoid repeated calls to get the global config.
+- Rewritten pixel events listeners using custom events, to support Shopify webpixels implementation.
+- Default pixel events handlers are now packaged separately, so Shopify connectors can implement its own pixel events handlers.
+
+## Fixed
+
+Infinite scroll paging issues (https://bloomreach.atlassian.net/browse/DCONN-79).
+
 ## [3.1.4] - 2024-10-08
 
 ### Changed

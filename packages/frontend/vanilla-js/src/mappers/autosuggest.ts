@@ -5,21 +5,21 @@ import type {
 import ejs from 'ejs';
 import { AUTOSUGGEST_TYPED_QUERY_TEMPLATE } from '../constants';
 import type * as TemplateData from '../types/autosuggest-template-data';
-import { buildAutosuggestConfig } from '../utils';
+import type { AutosuggestModuleConfig } from '../types';
 
 export function mapAutosuggestApiResponse(
-    responseData: AutosuggestResponseV1 | AutosuggestResponseV2
+    responseData: AutosuggestResponseV1 | AutosuggestResponseV2,
+    config: AutosuggestModuleConfig,
 ): TemplateData.AutosuggestTemplateData {
     return isV2Response(responseData)
-        ? mapV2Response(responseData)
-        : mapV1Response(responseData);
+        ? mapV2Response(responseData, config)
+        : mapV1Response(responseData, config);
 }
 
 export function mapV2Response(
-    responseData: AutosuggestResponseV2
+    responseData: AutosuggestResponseV2,
+    config: AutosuggestModuleConfig,
 ): TemplateData.AutosuggestTemplateData {
-    const config = buildAutosuggestConfig();
-
     const productSuggestions = responseData?.suggestionGroups?.[0]?.searchSuggestions || [];
     const suggestions = responseData?.suggestionGroups?.[0]?.querySuggestions || [];
     const categorySuggestions = responseData?.suggestionGroups?.[0]?.attributeSuggestions || [];
@@ -77,9 +77,9 @@ function isV2Response(
 }
 
 function mapV1Response(
-    responseData: AutosuggestResponseV1
+    responseData: AutosuggestResponseV1,
+    config: AutosuggestModuleConfig,
 ): TemplateData.AutosuggestTemplateData {
-    const config = buildAutosuggestConfig();
     const mappedApiResponse = {
         ...(responseData.response.q
             ? { originalQuery: responseData.response.q }

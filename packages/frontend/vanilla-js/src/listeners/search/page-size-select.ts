@@ -1,8 +1,9 @@
 import { PARAMETER_NAME_SIZE, PARAMETER_NAME_PAGE } from '../../constants';
 import { initiateSearch, getCurrentSearchRequestState } from '../../modules/builders';
+import type { SearchModuleConfig } from '../../types';
 import { updateParameterInUrl, resetLoadingIndicator } from '../../utils';
 
-function buildPageSizeSelectChangeListener() {
+function buildPageSizeSelectChangeListener(config: SearchModuleConfig) {
   return (event: Event) => {
     updateParameterInUrl(
       PARAMETER_NAME_SIZE,
@@ -10,11 +11,11 @@ function buildPageSizeSelectChangeListener() {
     );
     updateParameterInUrl(PARAMETER_NAME_PAGE, '1');
     resetLoadingIndicator();
-    initiateSearch({ toReplace: true }).catch(console.error);
+    initiateSearch(config, { toReplace: true }).catch(console.error);
   };
 }
 
-export function addPageSizeSelectChangeListener() {
+export function addPageSizeSelectChangeListener(config: SearchModuleConfig) {
   const currentSearchRequestState = getCurrentSearchRequestState();
 
   // Listen to page size select field changes
@@ -23,7 +24,7 @@ export function addPageSizeSelectChangeListener() {
   );
   if (sizeSelector) {
     if (!sizeSelector.getAttribute('hasListener')) {
-      sizeSelector.addEventListener('change', buildPageSizeSelectChangeListener());
+      sizeSelector.addEventListener('change', buildPageSizeSelectChangeListener(config));
       sizeSelector.setAttribute('hasListener', 'true');
     }
   }

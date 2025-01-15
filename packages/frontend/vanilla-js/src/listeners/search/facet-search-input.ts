@@ -1,7 +1,8 @@
 import { debounce } from 'lodash';
 import { getLoadMoreFacetGroupsElement, resetFacetGroups } from '../../utils';
+import type { SearchModuleConfig } from '../../types';
 
-function buildFacetSearchInputChangeListener() {
+function buildFacetSearchInputChangeListener(config: SearchModuleConfig) {
   return (event: Event) => {
     const inputValue = (
       (event?.target as HTMLInputElement)?.value || ''
@@ -38,12 +39,12 @@ function buildFacetSearchInputChangeListener() {
     getLoadMoreFacetGroupsElement().style.display = 'none';
 
     if (!inputValue) {
-      resetFacetGroups();
+      resetFacetGroups(config);
     }
   };
 }
 
-export function addFacetSearchInputChangeListener() {
+export function addFacetSearchInputChangeListener(config: SearchModuleConfig) {
   const facetSearchInput = document.querySelector(
     '#blm-product-search-search-filters__input'
     );
@@ -52,7 +53,7 @@ export function addFacetSearchInputChangeListener() {
       facetSearchInput.addEventListener(
         'input',
         // @ts-ignore
-        debounce(buildFacetSearchInputChangeListener(), 500) as EventListener
+        debounce(buildFacetSearchInputChangeListener(config), 500) as EventListener
       );
       facetSearchInput.setAttribute('hasInputListener', 'true');
     }

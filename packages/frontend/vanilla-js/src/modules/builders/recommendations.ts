@@ -96,10 +96,10 @@ export function buildRecommendationsModule(): RecommendationsModule {
         }).then((widgetResponse: RecommendationWidgetsResponseV2) => {
 
           const widgetElement = (widgetData.node as HTMLElement);
-          const config = buildRecommendationsConfig();
+          const config = buildRecommendationsConfig(widgetElement);
 
           // build template data
-          const templateData = mapRecommendationsApiResponse(widgetResponse);
+          const templateData = mapRecommendationsApiResponse(widgetResponse, config);
           const widgetAttributes: DOMStringMap = widgetElement.dataset;
           templateData.config.number_of_items_to_show = Number(widgetAttributes.numberOfItemsToShow);
 
@@ -139,7 +139,7 @@ export function buildRecommendationsModule(): RecommendationsModule {
 }
 
 function buildApiCallParameters(widgetNode: Node): GetWidgetRequest {
-  const config = buildRecommendationsConfig();
+  const config = buildRecommendationsConfig(widgetNode);
   const urlParameters = new URLSearchParams(window.location.search as string);
   const currentRecommendationsRequestState = getCurrentRecommendationsRequestState();
 
@@ -167,7 +167,8 @@ function buildApiCallParameters(widgetNode: Node): GetWidgetRequest {
     url: config.url ?? '',
     rows: Number(numberOfItemsToFetch) || DEFAULT_PAGE_SIZE,
     start: DEFAULT_START,
-    ...formatAdditionalParams(additionalParams)
+    ...(config.view_id ? { view_id: config.view_id } : {}),
+    ...formatAdditionalParams(additionalParams || config.widget.additional_parameters),
   };
 
   // add URL parameters
@@ -278,13 +279,14 @@ function logWidgetViewEvent(widgetElement: HTMLElement) {
     wid: widgetId,
     wty: widgetType,
     ...(widgetElement.dataset.query ? { wq: widgetElement.dataset.query } : {})
-  }
-    ; (window.BrTrk || {})?.getTracker()?.logEvent(
-      'widget',
-      'widget-view',
-      widgetViewEventData,
-      true
-    );
+  };
+
+  widgetElement.dispatchEvent(new CustomEvent('brWidgetView', {
+    bubbles: true,
+    detail: {
+      ...widgetViewEventData,
+    }
+  }));
 }
 
 function setupCarousel(widgetElement: HTMLElement, templateData: RecommendationsTemplateData) {

@@ -1,16 +1,17 @@
 
-declare const window: any;
-
 function buildAddToCartElementClickListener(addToCartElement: HTMLElement) {
   const {
     blmAddToCartSku,
     blmAddToCartProdId
   } = addToCartElement.dataset;
   return () => {
-    (window.BrTrk || {})?.getTracker()?.logEvent('cart', 'click-add', {
-      prod_id: blmAddToCartProdId,
-      sku: blmAddToCartSku
-    });
+    addToCartElement.dispatchEvent(new CustomEvent('brCartClickAdd', {
+      bubbles: true,
+      detail: {
+        prod_id: blmAddToCartProdId,
+        sku: blmAddToCartSku,
+      }
+    }));
   };
 }
 

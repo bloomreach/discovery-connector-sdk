@@ -27,6 +27,7 @@ export interface WidgetRequestType {
   brSeg?: string;
   segment?: string;
   cdp_segments?: string;
+  view_id?: string;
 }
 
 export interface GetCategoryWidgetRequest extends WidgetRequestType {

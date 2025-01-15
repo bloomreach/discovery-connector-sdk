@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant';
 import { getCurrentSearchRequestState } from '../modules/builders';
-import { buildSearchConfig, buildAutosuggestConfig } from './config';
+import type { AutosuggestModuleConfig, SearchModuleConfig } from '../types';
 
 export function findUpElementWithClassName(
     startElement: Node,
@@ -53,10 +53,9 @@ export function hideAllDynamicFacetGroups() {
   });
 }
 
-export function loadMoreFacetGroups(numberOfFacetGroupsParameter?: number) {
+export function loadMoreFacetGroups(config: SearchModuleConfig, numberOfFacetGroupsParameter?: number) {
   let i = 0;
   let numberOfHiddenBoxWithVisibleChildren = 0;
-  const config = buildSearchConfig();
   const numberOfFacetGroups = Number(
     numberOfFacetGroupsParameter || config.search?.initial_number_of_facets
   );
@@ -100,13 +99,12 @@ export function getLoadMoreFacetGroupsElement(): HTMLElement {
   return element as HTMLElement;
 }
 
-export function resetFacetGroups() {
-  const config = buildSearchConfig();
+export function resetFacetGroups(config: SearchModuleConfig) {
   const numberOfDisplayedFacetGroups = Number(config.search?.initial_number_of_facets);
   const numberOfDisplayedFacetValues = Number(config.search?.initial_number_of_facet_values);
 
   hideAllDynamicFacetGroups();
-  loadMoreFacetGroups(numberOfDisplayedFacetGroups - 1);
+  loadMoreFacetGroups(config, numberOfDisplayedFacetGroups - 1);
 
   // init facet items visibility
   document
@@ -118,8 +116,7 @@ export function resetFacetGroups() {
   getLoadMoreFacetGroupsElement().removeAttribute('style');
 }
 
-export function getSearchResultsContainerElement(): HTMLElement {
-  const config = buildSearchConfig();
+export function getSearchResultsContainerElement(config: SearchModuleConfig): HTMLElement {
   invariant(
     config.search?.selector,
     'the selector of search results container element must be set'
@@ -137,8 +134,7 @@ export function getSearchResultsListContainerElement(): HTMLElement {
   return searchResultsListContainerElement as HTMLElement;
 }
 
-export function getAutosuggestSearchInputElement(): HTMLInputElement {
-  const config = buildAutosuggestConfig();
+export function getAutosuggestSearchInputElement(config: AutosuggestModuleConfig): HTMLInputElement {
   invariant(
     config.autosuggest?.selector,
     'the selector of search results container element must be set'
@@ -154,6 +150,10 @@ export function getAutosuggestResultsContainerElement(): HTMLElement {
     '.blm-autosuggest-search-results'
   );
   return autosuggestResultsContainerElement as HTMLElement;
+}
+
+export function getAutosuggestSearchFormElement(config: AutosuggestModuleConfig): HTMLFormElement {
+  return findUpElementByTagName(getAutosuggestSearchInputElement(config), 'form') as HTMLFormElement;
 }
 
 export function resetLoadingIndicator() {
@@ -247,7 +247,7 @@ export function setupSavingScrollPosition() {
   };
 }
 
-export function injectAutosuggestDynamicStyles(): void {
+export function injectAutosuggestDynamicStyles(config: AutosuggestModuleConfig): void {
   if (!getAutosuggestResultsContainerElement()) {
     const searchResultsContainerStyles = document.createElement('style');
     searchResultsContainerStyles.innerHTML = `.blm-autosuggest-search-results {
@@ -255,18 +255,18 @@ export function injectAutosuggestDynamicStyles(): void {
       position: absolute;
       z-index: 100;
       left: 0;
-      transform: translateY(${getAutosuggestSearchInputElement().offsetHeight}px);
+      transform: translateY(${getAutosuggestSearchInputElement(config).offsetHeight}px);
     }`;
     document.head.appendChild(searchResultsContainerStyles);
   }
 }
 
-export function injectAutosuggestResultsContainer(): void {
+export function injectAutosuggestResultsContainer(config: AutosuggestModuleConfig): void {
   if (!getAutosuggestResultsContainerElement()) {
     const searchResultsContainerElement = document.createElement('div');
     searchResultsContainerElement.classList.add(
       'blm-autosuggest-search-results'
     );
-    getAutosuggestSearchInputElement().parentElement?.appendChild(searchResultsContainerElement);
+    getAutosuggestSearchInputElement(config).parentElement?.appendChild(searchResultsContainerElement);
   }
 }

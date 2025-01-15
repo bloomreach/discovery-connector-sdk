@@ -81,7 +81,8 @@ const baseConfig = {
 const inputs = {
   autosuggest: 'src/modules/autosuggest-entry-point.ts',
   category: 'src/modules/category-entry-point.ts',
-  events: 'src/modules/product-events-entry-point.ts',
+  'pixel-events': 'src/modules/pixel-events-entry-point.ts',
+  'product-events': 'src/modules/product-events-entry-point.ts',
   recommendations: 'src/modules/recommendations-entry-point.ts',
   search: 'src/modules/search-entry-point.ts',
 };
@@ -109,7 +110,7 @@ const buildConfigs = Object.keys(inputs).reduce((allConfigs, moduleName) => {
           outputStyle: 'compressed'
         }),
         optimizeLodashImports(),
-        terser()
+        // terser()
       ],
     }
   ];

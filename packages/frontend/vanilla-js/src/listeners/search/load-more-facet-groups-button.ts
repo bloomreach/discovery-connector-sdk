@@ -1,15 +1,16 @@
+import type { SearchModuleConfig } from '../../types';
 import { getLoadMoreFacetGroupsElement, loadMoreFacetGroups } from '../../utils';
 
-function buildLoadMoreFacetGroupsButtonClickListener() {
+function buildLoadMoreFacetGroupsButtonClickListener(config: SearchModuleConfig) {
   return () => {
-    loadMoreFacetGroups();
+    loadMoreFacetGroups(config);
   };
 }
 
-export function addLoadMoreFacetGroupsButtonClickListener() {
+export function addLoadMoreFacetGroupsButtonClickListener(config: SearchModuleConfig) {
   const element = getLoadMoreFacetGroupsElement();
   if (element && !element.getAttribute('hasListener')) {
-    element.addEventListener('click', buildLoadMoreFacetGroupsButtonClickListener());
+    element.addEventListener('click', buildLoadMoreFacetGroupsButtonClickListener(config));
     element.setAttribute('hasListener', 'true');
   }
 }

@@ -10,4 +10,4 @@ window.BloomreachModules = {
   pathwaysRecommendations: recommendationsModule,
 };
 
-recommendationsModule.load().catch(console.error);
+// window.recommendationsReady = recommendationsModule.load().catch(console.error);

@@ -1,8 +1,6 @@
 import { getCurrentRecommendationsUiState } from '../../modules/builders';
 
-declare const window: any;
-
-function buildWidgetAddToCartButtonClickListener(parameters: {
+function buildWidgetAddToCartButtonClickListener(widgetElement: HTMLElement, parameters: {
   widgetRid: string,
   widgetId: string,
   widgetType: string,
@@ -22,11 +20,12 @@ function buildWidgetAddToCartButtonClickListener(parameters: {
   };
 
   return () => {
-    (window.BrTrk || {})?.getTracker()?.logEvent(
-      'cart',
-      'widget-add',
-      widgetAddToCartEventData
-    );
+    widgetElement.dispatchEvent(new CustomEvent('brCartWidgetAdd', {
+      bubbles: true,
+      detail: {
+        ...widgetAddToCartEventData,
+      }
+    }));
   };
 }
 
@@ -51,7 +50,7 @@ export function addWidgetAddToCartButtonClickListener() {
         if (!addToCartElement.getAttribute('hasListener')) {
           addToCartElement.addEventListener(
             'click',
-            buildWidgetAddToCartButtonClickListener({
+            buildWidgetAddToCartButtonClickListener(addToCartElement, {
               widgetRid,
               widgetId,
               widgetType,

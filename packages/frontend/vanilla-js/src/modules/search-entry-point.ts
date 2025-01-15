@@ -10,4 +10,4 @@ window.BloomreachModules = {
   search: productSearchModule,
 };
 
-productSearchModule.load().catch(console.error);
+// window.searchReady = productSearchModule.load().catch(console.error);

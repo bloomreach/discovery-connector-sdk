@@ -2,6 +2,7 @@ import ejs from 'ejs';
 import invariant from 'tiny-invariant';
 import type {
   AutosuggestModule,
+  AutosuggestModuleConfig,
   CurrentAutosuggestRequestState,
   CurrentAutosuggestUiState,
 } from '../../types';
@@ -9,6 +10,7 @@ import type {
 import * as listeners from '../../listeners/autosuggest';
 import {
   buildAutosuggestConfig,
+  formatAdditionalParams,
   getAutosuggestResultsContainerElement,
   getAutosuggestSearchInputElement,
   injectAutosuggestDynamicStyles,
@@ -43,29 +45,29 @@ export function buildAutosuggestModule(): AutosuggestModule {
     getCurrentAutosuggestUiState: () => currentAutosuggestUiState,
 
     load: async () => {
-      if (!areRequirementsMet()) {
+      const config = buildAutosuggestConfig();
+      if (!areRequirementsMet(config)) {
         return;
       }
 
-      listeners.addSearchInputElementListeners();
-      listeners.addFormElementSubmitListener();
+      listeners.addSearchInputElementListeners(config);
+      listeners.addFormElementSubmitListener(config);
 
-      getAutosuggestSearchInputElement().setAttribute('autocomplete', 'off');
+      getAutosuggestSearchInputElement(config).setAttribute('autocomplete', 'off');
     },
   };
 }
 
-export async function suggest(query: string): Promise<void> {
+export async function suggest(query: string, config: AutosuggestModuleConfig): Promise<void> {
   updateCurrentAutosuggestRequestState({
     request_id: generateRequestId(),
   });
 
-  const apiCallParameters = buildApiCallParameters(query);
+  const apiCallParameters = buildApiCallParameters(query, config);
   // todo remediate typescript issue
   // @ts-ignore
   const results = await getSuggestions(apiCallParameters);
-  const templateData = mapAutosuggestApiResponse(results);
-  const config = buildAutosuggestConfig();
+  const templateData = mapAutosuggestApiResponse(results, config);
 
   updateCurrentAutosuggestRequestState({ last_template_data: templateData });
 
@@ -74,12 +76,11 @@ export async function suggest(query: string): Promise<void> {
     templateData
   );
 
-  listeners.addCategoryLinkElementClickListener();
-  listeners.addSuggestionTermElementClickListener();
+  listeners.addCategoryLinkElementClickListener(config);
+  listeners.addSuggestionTermElementClickListener(config);
 }
 
-function buildApiCallParameters(query: string) {
-  const config = buildAutosuggestConfig();
+function buildApiCallParameters(query: string, config: AutosuggestModuleConfig) {
   const urlParameters = new URLSearchParams(window.location.search as string);
   const currentAutosuggestRequestState = getCurrentAutosuggestRequestState();
   const apiParameters: Partial<GetSuggestionsRequest> = {
@@ -92,7 +93,8 @@ function buildApiCallParameters(query: string) {
     ref_url: config.ref_url,
     url: config.url,
     request_type: config.request_type,
-    catalog_views: config.autosuggest?.catalog_views
+    catalog_views: config.autosuggest?.catalog_views,
+    ...formatAdditionalParams(config.autosuggest?.additional_parameters),
   };
 
   // add URL parameters
@@ -129,19 +131,17 @@ export function updateCurrentAutosuggestUiState(state: Partial<CurrentAutosugges
   });
 }
 
-function areRequirementsMet() {
-  const config = buildAutosuggestConfig();
-
+function areRequirementsMet(config: AutosuggestModuleConfig) {
   try {
     invariant(config.account_id, 'account_id must be set');
     invariant(config.domain_key, 'domain_key must be set');
 
     // these check if the elements are in the DOM
-    if (!getAutosuggestSearchInputElement()) {
+    if (!getAutosuggestSearchInputElement(config)) {
       throw Error('Search input element not found');
     }
-    injectAutosuggestDynamicStyles();
-    injectAutosuggestResultsContainer();
+    injectAutosuggestDynamicStyles(config);
+    injectAutosuggestResultsContainer(config);
 
     if (!getAutosuggestResultsContainerElement()) {
       throw Error('Autosuggest results container element cannot be created');

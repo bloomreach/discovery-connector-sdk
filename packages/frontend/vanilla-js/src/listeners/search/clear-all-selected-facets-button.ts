@@ -1,8 +1,9 @@
 import { PARAMETER_NAME_FACETS, PARAMETER_NAME_PAGE } from '../../constants';
 import { initiateSearch, updateCurrentSearchRequestState } from '../../modules/builders';
+import type { SearchModuleConfig } from '../../types';
 import { buildPriceUrlParameterObject, resetLoadingIndicator, updateMultipleInstanceParametersInUrl, updateParameterInUrl } from '../../utils';
 
-function buildClearAllSelectedFacetsButtonClickListener() {
+function buildClearAllSelectedFacetsButtonClickListener(config: SearchModuleConfig) {
   return () => {
     resetLoadingIndicator();
     updateMultipleInstanceParametersInUrl(
@@ -15,17 +16,17 @@ function buildClearAllSelectedFacetsButtonClickListener() {
       price_range_min_value: 0,
       price_range_max_value: 0,
     });
-    initiateSearch({ toReplace: true }).catch(console.error);
+    initiateSearch(config, { toReplace: true }).catch(console.error);
   };
 }
 
-export function addClearAllSelectedFacetsButtonClickListener() {
+export function addClearAllSelectedFacetsButtonClickListener(config: SearchModuleConfig) {
   const selectedFiltersClearAllButton = document.querySelector(
     '.blm-product-search-selected-filters__clear-all'
   );
   if (selectedFiltersClearAllButton) {
     if (!selectedFiltersClearAllButton.getAttribute('hasListener')) {
-      selectedFiltersClearAllButton.addEventListener('click', buildClearAllSelectedFacetsButtonClickListener());
+      selectedFiltersClearAllButton.addEventListener('click', buildClearAllSelectedFacetsButtonClickListener(config));
       selectedFiltersClearAllButton.setAttribute('hasListener', 'true');
     }
   }

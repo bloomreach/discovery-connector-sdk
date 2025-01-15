@@ -15,20 +15,20 @@ import type {
   SearchResponseFacetCountsV3FacetsStats as V3FacetsStats,
 } from '@bloomreach/discovery-api-client/src/getSearchResultsAPI';
 import type * as TemplateData from '../types/search-template-data';
-import { buildSearchConfig } from '../utils';
+import type { SearchModuleConfig } from '../types';
 
 export function mapSearchApiResponse(
-  responseData: SearchResponse
+  responseData: SearchResponse,
+  config: SearchModuleConfig,
 ): TemplateData.SearchTemplateData {
 
-  const config = buildSearchConfig();
   const facets = responseData?.facet_counts ? (
     isV3Facets(responseData.facet_counts) ? mapFacetsV3(responseData.facet_counts) : mapFacets(responseData.facet_counts, responseData.stats)
   ) : { facets: [] };
   return {
     ...facets,
 
-    products: processDocs(responseData.response?.docs || []),
+    products: processDocs(responseData.response?.docs || [], config),
 
     // TODO delete this in case we don't need any other attribute from the grouped response
     /* ...(responseData?.group_response ? {
@@ -58,7 +58,7 @@ export function mapSearchApiResponse(
           ...responseData.group_response?.[groupCategoryId],
           groups: responseData.group_response?.[groupCategoryId]?.groups?.map(group => ({
             title: group.groupValue,
-            products: processDocs((group?.doclist?.docs || [])),
+            products: processDocs((group?.doclist?.docs || []), config),
           })) || []
         };
       }, {} as TemplateData.GroupedProducts)
@@ -211,8 +211,7 @@ function mapPriceStatsV3(facets?: SearchResponseFacetCountsV3Facets[]): Pick<Tem
   } : {};
 }
 
-function processDocs(docs: SearchResponseDoc[]): TemplateData.Product[] {
-  const config = buildSearchConfig();
+function processDocs(docs: SearchResponseDoc[], config: SearchModuleConfig): TemplateData.Product[] {
   return docs.reduce(
     (allProducts, currentProduct) => {
       return [

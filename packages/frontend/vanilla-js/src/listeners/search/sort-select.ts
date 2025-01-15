@@ -1,19 +1,20 @@
 import { PARAMETER_NAME_SORT } from '../../constants';
 import { initiateSearch, getCurrentSearchRequestState } from '../../modules/builders';
+import type { SearchModuleConfig } from '../../types';
 import { updateParameterInUrl, resetLoadingIndicator } from '../../utils';
 
-function buildSortSelectChangeListener() {
+function buildSortSelectChangeListener(config: SearchModuleConfig) {
   return (event: Event) => {
     updateParameterInUrl(
       PARAMETER_NAME_SORT,
       (event?.target as HTMLSelectElement)?.value
     );
     resetLoadingIndicator();
-    initiateSearch({ toReplace: true }).catch(console.error);
+    initiateSearch(config, { toReplace: true }).catch(console.error);
   };
 }
 
-export function addSortSelectChangeListener() {
+export function addSortSelectChangeListener(config: SearchModuleConfig) {
   const currentSearchRequestState = getCurrentSearchRequestState();
 
   const sortSelector = document.querySelector(
@@ -22,7 +23,7 @@ export function addSortSelectChangeListener() {
 
   if (sortSelector) {
     if (!sortSelector.getAttribute('hasListener')) {
-      sortSelector.addEventListener('change', buildSortSelectChangeListener());
+      sortSelector.addEventListener('change', buildSortSelectChangeListener(config));
       sortSelector.setAttribute('hasListener', 'true');
     }
   }

@@ -10,4 +10,4 @@ window.BloomreachModules = {
   autosuggest: autosuggestModule,
 };
 
-autosuggestModule.load().catch(console.error);
+// window.autosuggestReady = autosuggestModule.load().catch(console.error);
