@@ -118,6 +118,10 @@ export function buildPriceUrlParameterObject(): { price?: string } {
       upperBoundary += 1;
     }
   }
+  
+  if (!checkedFacets.price && currentSearchRequestState.price_range_max_value === 0 && currentSearchRequestState.price_range_min_value === 0) {
+    return {};
+  }
 
   if (
     !checkedFacets.price &&

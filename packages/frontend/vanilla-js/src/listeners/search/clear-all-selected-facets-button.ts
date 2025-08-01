@@ -1,14 +1,14 @@
 import { PARAMETER_NAME_FACETS, PARAMETER_NAME_PAGE } from '../../constants';
 import { initiateSearch, updateCurrentSearchRequestState } from '../../modules/builders';
 import type { SearchModuleConfig } from '../../types';
-import { buildPriceUrlParameterObject, resetLoadingIndicator, updateMultipleInstanceParametersInUrl, updateParameterInUrl } from '../../utils';
+import { resetLoadingIndicator, updateMultipleInstanceParametersInUrl, updateParameterInUrl } from '../../utils';
 
 function buildClearAllSelectedFacetsButtonClickListener(config: SearchModuleConfig) {
   return () => {
     resetLoadingIndicator();
     updateMultipleInstanceParametersInUrl(
       PARAMETER_NAME_FACETS,
-      { ...buildPriceUrlParameterObject() }
+      {}
     );
     updateParameterInUrl(PARAMETER_NAME_PAGE, '1');
     // reset price range
