@@ -127,6 +127,11 @@ function storeSegmentationPixelData() {
 }
 
 export async function initiateSearch(config: SearchModuleConfig, options = { toReplace: false }) {
+  const rect = {
+    top: window.scrollY,
+    bottom: window.scrollY + window.innerHeight,
+  };
+
   updateCurrentSearchRequestState({
     request_id: generateRequestId(),
   });
@@ -172,7 +177,14 @@ export async function initiateSearch(config: SearchModuleConfig, options = { toR
       templateData
     );
 
-    window.scrollTo(0, 0);
+    if (rect.bottom < document.documentElement.scrollHeight) {
+      scrollTo(0, rect.top);
+    } else {
+      const results = document.querySelectorAll('.blm-product-search__result');
+      if (results && results.length > 0) {
+        results[results.length - 1]?.scrollIntoView();
+      }
+    }
 
   } else if (config.search.infinite_scroll) {
 
